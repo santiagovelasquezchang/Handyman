@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Animated,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../../theme';
 
 // Steps that cycle on screen while waiting
@@ -99,6 +100,16 @@ export default function TaskLoadingScreen({ navigation, route }) {
             <Text style={styles.chipText}>{route.params.category.name}</Text>
           </View>
         ) : null}
+        {route.params?.selectedDate ? (
+          <View style={[styles.chip, styles.chipDate]}>
+            <Ionicons name="calendar-outline" size={12} color={COLORS.accent} />
+            <Text style={styles.chipDateText}>
+              {route.params.selectedDate === 'Right Now'
+                ? 'Right Now (ASAP)'
+                : `${route.params.selectedDate}${route.params.selectedTime ? `  ·  ${route.params.selectedTime}` : ''}`}
+            </Text>
+          </View>
+        ) : null}
       </Animated.View>
     </View>
   );
@@ -156,5 +167,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: FONTS.semibold,
     color: COLORS.primary,
+  },
+  chipDate: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: '#FFF0E8',
+  },
+  chipDateText: {
+    fontSize: 12,
+    fontWeight: FONTS.semibold,
+    color: COLORS.accent,
   },
 });

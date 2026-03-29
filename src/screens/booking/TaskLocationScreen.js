@@ -88,9 +88,11 @@ export default function TaskLocationScreen({ navigation, route }) {
   const [unit, setUnit]     = useState('');
 
   const handleContinue = () => {
-    navigation.navigate('TaskScopeRooms', {
-      ...route.params,
+    navigation.navigate('TaskScopeStep', {
+      category,
       address: { street: street.trim(), unit: unit.trim() },
+      stepIndex: 0,
+      answers: {},
     });
   };
 
