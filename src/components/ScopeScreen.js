@@ -5,7 +5,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, RADIUS } from '../theme';
 import ScopeOptionButton from './ScopeOptionButton';
 import BottomBar from './BottomBar';
@@ -67,6 +68,7 @@ const chip = StyleSheet.create({
  * @param {string}   selected   – currently selected option key/label
  * @param {Function} onSelect   – called with the option key/label
  * @param {Function} onContinue – called when Continue is pressed
+ * @param {Function} [onBack]   – called when Back is pressed; omit to hide button
  */
 export default function ScopeScreen({
   step,
@@ -78,10 +80,24 @@ export default function ScopeScreen({
   selected,
   onSelect,
   onContinue,
+  onBack,
 }) {
   return (
     <View style={styles.root}>
       <ProgressBar step={step} total={totalSteps} />
+
+      {/* ── Back button ── */}
+      {onBack ? (
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={onBack}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          activeOpacity={0.65}
+        >
+          <Ionicons name="arrow-back" size={20} color={COLORS.primary} />
+          <Text style={styles.backLabel}>Back</Text>
+        </TouchableOpacity>
+      ) : null}
 
       <ScrollView
         contentContainerStyle={styles.scroll}
@@ -143,5 +159,20 @@ const styles = StyleSheet.create({
   },
   options: {
     marginTop: 14,
+  },
+
+  // Back button
+  backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 20,
+    paddingTop: 14,
+    paddingBottom: 2,
+  },
+  backLabel: {
+    fontSize: 14,
+    fontWeight: FONTS.semibold,
+    color: COLORS.primary,
   },
 });

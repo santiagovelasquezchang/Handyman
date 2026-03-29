@@ -60,7 +60,9 @@ function TaskerSummaryCard({ tasker, category, selectedDate, selectedTime, addre
       <View style={styles.taskerDetails}>
         <View style={styles.detailRow}>
           <Ionicons name="calendar-outline" size={14} color={COLORS.textSecondary} />
-          <Text style={styles.detailText}>{selectedDate}  ·  {selectedTime}</Text>
+          <Text style={styles.detailText}>
+            {selectedDate}{selectedTime ? `  ·  ${selectedTime}` : ''}
+          </Text>
         </View>
         {address?.street ? (
           <View style={styles.detailRow}>
@@ -169,10 +171,21 @@ function SuccessOverlay({ visible, tasker, selectedDate, selectedTime, onGoHome 
           <Text style={styles.successTitle}>You're all set!</Text>
           <Text style={styles.successSub}>
             <Text style={{ fontWeight: FONTS.bold }}>{tasker?.name}</Text>
-            {' '}is confirmed for{'\n'}
-            <Text style={{ fontWeight: FONTS.bold }}>{selectedDate}</Text>
-            {' '}at{' '}
-            <Text style={{ fontWeight: FONTS.bold }}>{selectedTime}</Text>
+            {' '}is confirmed{'\n'}
+            {selectedDate === 'Right Now' ? (
+              <Text style={{ fontWeight: FONTS.bold }}>Right Now (ASAP)</Text>
+            ) : (
+              <>
+                <Text>{'for '}</Text>
+                <Text style={{ fontWeight: FONTS.bold }}>{selectedDate}</Text>
+                {selectedTime ? (
+                  <>
+                    <Text>{' at '}</Text>
+                    <Text style={{ fontWeight: FONTS.bold }}>{selectedTime}</Text>
+                  </>
+                ) : null}
+              </>
+            )}
           </Text>
 
           <Text style={styles.successNote}>

@@ -52,11 +52,13 @@ import HelpCenterScreen           from './src/screens/profile/HelpCenterScreen';
 
 // ── BOOKING FUNNEL ────────────────────────────────────────────────────────────
 import TaskLocationScreen       from './src/screens/booking/TaskLocationScreen';
+import TaskScopeStepScreen      from './src/screens/booking/TaskScopeStepScreen';
 // Legacy category-specific scope screens (Cleaning funnel – kept for compat)
 import TaskScopeRoomsScreen     from './src/screens/booking/TaskScopeRoomsScreen';
 import TaskScopeBathsScreen     from './src/screens/booking/TaskScopeBathsScreen';
 import TaskScopeConditionScreen from './src/screens/booking/TaskScopeConditionScreen';
 import TaskScopePetsScreen      from './src/screens/booking/TaskScopePetsScreen';
+import TaskDateTimeScreen       from './src/screens/booking/TaskDateTimeScreen';
 import TaskLoadingScreen        from './src/screens/booking/TaskLoadingScreen';
 import TaskerListScreen         from './src/screens/booking/TaskerListScreen';
 import TaskerProfileScreen      from './src/screens/booking/TaskerProfileScreen';
@@ -213,17 +215,14 @@ function AppNavigator() {
 
       {/* ────────────────────────────────────────────────────────────────────
           BOOKING FUNNEL
-          Step 1  – TaskLocation          (fixed)
-          Steps 2-4
-            Cleaning category    → TaskScopeRooms → TaskScopeBaths
-                                 → TaskScopeCondition → TaskScopePets
-            All other categories → TaskScopeStep (generic, reads
-                                   category.scoping_details[stepIndex])
-          Step 5  – TaskLoading           (spinner)
-          Step 6  – TaskerList
-          Step 7  – TaskerProfile
-          Step 8  – TaskDetails
-          Step 9  – ReviewConfirm
+          Step 1  – TaskLocation          (address entry)
+          Steps 2+ – TaskScopeStep        (dynamic, reads scoping_details)
+          Step N  – TaskDateTime          (date/time or Right Now ASAP)
+          Step N+1– TaskLoading           (spinner, then replaces to TaskerList)
+          Step N+2– TaskerList
+          Step N+3– TaskerProfile         (Select & Continue → TaskDetails)
+          Step N+4– TaskDetails           (extra instructions)
+          Step N+5– ReviewConfirm         (checkout)
       ──────────────────────────────────────────────────────────────────── */}
       <RootStack.Screen
         name="TaskLocation"
@@ -263,10 +262,15 @@ function AppNavigator() {
       */}
       <RootStack.Screen
         name="TaskScopeStep"
-        component={TaskScopeRoomsScreen}
+        component={TaskScopeStepScreen}
         options={{ title: '', headerBackTitle: '' }}
       />
 
+      <RootStack.Screen
+        name="TaskDateTime"
+        component={TaskDateTimeScreen}
+        options={{ title: '', headerShown: false }}
+      />
       <RootStack.Screen
         name="TaskLoading"
         component={TaskLoadingScreen}

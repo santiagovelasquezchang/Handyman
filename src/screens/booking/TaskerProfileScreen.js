@@ -7,15 +7,12 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
   Image,
   FlatList,
-  Modal,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { AVAILABLE_SLOTS } from '../../../mockData';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -237,121 +234,15 @@ function RatingsSection({ tasker }) {
   );
 }
 
-// ── Schedule modal ────────────────────────────────────────────────────────────
-function ScheduleModal({ visible, onClose, onConfirm }) {
-  const insets = useSafeAreaInsets();
-  const [dateIdx, setDateIdx]     = useState(0);
-  const [timeSlot, setTimeSlot]   = useState(null);
-
-  const slot = AVAILABLE_SLOTS[dateIdx];
-  const canConfirm = timeSlot !== null;
-
-  const handleConfirm = () => {
-    onConfirm({ date: slot.date, time: timeSlot });
-    // reset for next open
-    setTimeSlot(null);
-  };
-
-  return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      onRequestClose={onClose}
-    >
-      <TouchableOpacity style={modal.overlay} onPress={onClose} activeOpacity={1}>
-        <TouchableOpacity
-          style={[modal.sheet, { paddingBottom: Math.max(insets.bottom, 24) }]}
-          activeOpacity={1}
-        >
-          {/* Handle */}
-          <View style={modal.handle} />
-
-          <Text style={modal.title}>Select Date & Time</Text>
-
-          {/* Date selector */}
-          <Text style={modal.sectionLabel}>Date</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={modal.dateRow}
-          >
-            {AVAILABLE_SLOTS.map((s, i) => {
-              const parts = s.date.split(' '); // e.g. ["Mon", "Mar", "29"]
-              const active = i === dateIdx;
-              return (
-                <TouchableOpacity
-                  key={i}
-                  style={[modal.dateBtn, active && modal.dateBtnActive]}
-                  onPress={() => { setDateIdx(i); setTimeSlot(null); }}
-                  activeOpacity={0.75}
-                >
-                  <Text style={[modal.dateDayName, active && modal.dateDayNameActive]}>
-                    {parts[0]}
-                  </Text>
-                  <Text style={[modal.dateDayNum, active && modal.dateDayNumActive]}>
-                    {parts[2]}
-                  </Text>
-                  <Text style={[modal.dateMonth, active && modal.dateMonthActive]}>
-                    {parts[1]}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-
-          {/* Time selector */}
-          <Text style={modal.sectionLabel}>Available times</Text>
-          <View style={modal.timeGrid}>
-            {slot?.times.map((t) => {
-              const active = t === timeSlot;
-              return (
-                <TouchableOpacity
-                  key={t}
-                  style={[modal.timeBtn, active && modal.timeBtnActive]}
-                  onPress={() => setTimeSlot(t)}
-                  activeOpacity={0.75}
-                >
-                  <Text style={[modal.timeText, active && modal.timeTextActive]}>{t}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-
-          {/* Confirm */}
-          <TouchableOpacity
-            style={[modal.confirmBtn, !canConfirm && modal.confirmBtnDisabled]}
-            onPress={canConfirm ? handleConfirm : undefined}
-            activeOpacity={0.85}
-          >
-            <Text style={[modal.confirmText, !canConfirm && modal.confirmTextDisabled]}>
-              Confirm Date & Time
-            </Text>
-          </TouchableOpacity>
-        </TouchableOpacity>
-      </TouchableOpacity>
-    </Modal>
-  );
-}
 
 // ── Main screen ───────────────────────────────────────────────────────────────
 export default function TaskerProfileScreen({ navigation, route }) {
   const { tasker } = route.params;
   const insets = useSafeAreaInsets();
-  const [scheduleOpen, setScheduleOpen] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: tasker.name });
   }, [navigation, tasker]);
-
-  const handleConfirmSchedule = ({ date, time }) => {
-    setScheduleOpen(false);
-    navigation.navigate('TaskDetails', {
-      ...route.params,
-      selectedDate: date,
-      selectedTime: time,
-    });
-  };
 
   return (
     <View style={styles.root}>
@@ -381,19 +272,12 @@ export default function TaskerProfileScreen({ navigation, route }) {
         </View>
         <TouchableOpacity
           style={styles.selectBtn}
-          onPress={() => setScheduleOpen(true)}
+          onPress={() => navigation.navigate('TaskDetails', { ...route.params })}
           activeOpacity={0.85}
         >
-          <Text style={styles.selectBtnText}>Select</Text>
+          <Text style={styles.selectBtnText}>Select & Continue</Text>
         </TouchableOpacity>
       </View>
-
-      {/* ── Schedule modal ── */}
-      <ScheduleModal
-        visible={scheduleOpen}
-        onClose={() => setScheduleOpen(false)}
-        onConfirm={handleConfirmSchedule}
-      />
     </View>
   );
 }
@@ -697,124 +581,3 @@ const styles = StyleSheet.create({
   },
 });
 
-// ── Schedule modal styles ─────────────────────────────────────────────────────
-const modal = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: COLORS.overlay,
-    justifyContent: 'flex-end',
-  },
-  sheet: {
-    backgroundColor: COLORS.white,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingHorizontal: 20,
-    paddingTop: 12,
-  },
-  handle: {
-    width: 40,
-    height: 4,
-    backgroundColor: COLORS.border,
-    borderRadius: 2,
-    alignSelf: 'center',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: FONTS.bold,
-    color: COLORS.textPrimary,
-    marginBottom: 20,
-  },
-  sectionLabel: {
-    fontSize: 12,
-    fontWeight: FONTS.semibold,
-    color: COLORS.textSecondary,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
-    marginBottom: 10,
-  },
-
-  // Date row
-  dateRow: {
-    gap: 8,
-    paddingBottom: 20,
-  },
-  dateBtn: {
-    width: 60,
-    paddingVertical: 10,
-    borderRadius: RADIUS.md,
-    borderWidth: 1.5,
-    borderColor: COLORS.border,
-    alignItems: 'center',
-  },
-  dateBtnActive: {
-    borderColor: COLORS.primary,
-    backgroundColor: COLORS.primaryLight,
-  },
-  dateDayName: {
-    fontSize: 11,
-    fontWeight: FONTS.semibold,
-    color: COLORS.textSecondary,
-    marginBottom: 4,
-  },
-  dateDayNameActive: { color: COLORS.primary },
-  dateDayNum: {
-    fontSize: 18,
-    fontWeight: FONTS.bold,
-    color: COLORS.textPrimary,
-  },
-  dateDayNumActive: { color: COLORS.primary },
-  dateMonth: {
-    fontSize: 10,
-    color: COLORS.textSecondary,
-    marginTop: 3,
-  },
-  dateMonthActive: { color: COLORS.primary },
-
-  // Time grid
-  timeGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-    marginBottom: 24,
-  },
-  timeBtn: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: RADIUS.md,
-    borderWidth: 1.5,
-    borderColor: COLORS.border,
-  },
-  timeBtnActive: {
-    borderColor: COLORS.primary,
-    backgroundColor: COLORS.primaryLight,
-  },
-  timeText: {
-    fontSize: 14,
-    fontWeight: FONTS.semibold,
-    color: COLORS.textPrimary,
-  },
-  timeTextActive: { color: COLORS.primary },
-
-  // Confirm
-  confirmBtn: {
-    backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.md,
-    height: 52,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 4,
-  },
-  confirmBtnDisabled: {
-    backgroundColor: COLORS.surface,
-  },
-  confirmText: {
-    fontSize: 16,
-    fontWeight: FONTS.bold,
-    color: COLORS.white,
-    letterSpacing: 0.3,
-  },
-  confirmTextDisabled: {
-    color: COLORS.inactive,
-  },
-});
