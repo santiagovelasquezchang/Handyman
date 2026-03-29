@@ -44,6 +44,11 @@ export const FONTS = {
   medium:   '500',
   semibold: '600',
   bold:     '700',
+  // Font family strings — used in fontFamily prop
+  family:         'Inter_400Regular',
+  familyMedium:   'Inter_500Medium',
+  familySemibold: 'Inter_600SemiBold',
+  familyBold:     'Inter_700Bold',
 };
 
 export const RADIUS = {

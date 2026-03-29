@@ -36,6 +36,7 @@ export const CATEGORIES = [
         title: 'What size is the TV?',
         key: 'screen_size',
         type: 'button_select',
+<<<<<<< HEAD
         options: ['Under 40"', '40" to 60"', 'Over 60"'],
       },
       {
@@ -48,6 +49,20 @@ export const CATEGORIES = [
       {
         step: 3,
         title: 'Do you already have the mount?',
+=======
+        options: ['Under 40"', '40" – 60"', 'Over 60"'],
+      },
+      {
+        step: 3,
+        title: 'What type of wall?',
+        key: 'wall_type',
+        type: 'card_select',
+        options: ['Drywall', 'Brick / Concrete', 'Wood'],
+      },
+      {
+        step: 4,
+        title: 'Do you have a wall mount?',
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
         key: 'has_mount',
         type: 'button_select',
         options: ['Yes', 'No, Tasker needs to buy it'],
@@ -135,6 +150,7 @@ export const CATEGORIES = [
     baseRate: 30,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'What is the size of the damage?',
         key: 'damage_size',
@@ -154,6 +170,20 @@ export const CATEGORIES = [
         key: 'needs_paint',
         type: 'button_select',
         options: ['Yes', 'No'],
+=======
+        step: 2,
+        title: 'How big is the hole / damage?',
+        key: 'hole_size',
+        type: 'card_select',
+        options: ['Small (nail / screw)', 'Medium (fist size)', 'Large (panel)'],
+      },
+      {
+        step: 3,
+        title: 'Where is the damage?',
+        key: 'location',
+        type: 'button_select',
+        options: ['Wall', 'Ceiling'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -224,6 +254,7 @@ export const CATEGORIES = [
     baseRate: 22,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'What type of items?',
         key: 'item_type',
@@ -236,6 +267,20 @@ export const CATEGORIES = [
         key: 'stairs',
         type: 'button_select',
         options: ['Yes', 'No, ground floor only'],
+=======
+        step: 2,
+        title: 'What type of item?',
+        key: 'item_type',
+        type: 'card_select',
+        options: ['Furniture', 'Appliances', 'Boxes / Cargo'],
+      },
+      {
+        step: 3,
+        title: 'Are there stairs involved?',
+        key: 'has_stairs',
+        type: 'button_select',
+        options: ['Yes', 'No'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -249,6 +294,7 @@ export const CATEGORIES = [
     baseRate: 30,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'What needs repair?',
         key: 'repair_type',
@@ -261,6 +307,20 @@ export const CATEGORIES = [
         key: 'issue',
         type: 'button_select',
         options: ['Hinges/Won\'t close', 'Broken/Chipped', 'Lock/Handle issue'],
+=======
+        step: 2,
+        title: 'What type of issue?',
+        key: 'repair_type',
+        type: 'card_select',
+        options: ['Hinges', 'Alignment', 'Custom build'],
+      },
+      {
+        step: 3,
+        title: 'Describe the issue',
+        key: 'description',
+        type: 'text_input',
+        placeholder: 'e.g. Cabinet door falls off, drawer stuck...',
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -274,6 +334,7 @@ export const CATEGORIES = [
     baseRate: 45,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'What do you need done?',
         key: 'electrical_type',
@@ -286,6 +347,20 @@ export const CATEGORIES = [
         key: 'height',
         type: 'button_select',
         options: ['Standard height', 'High ceiling (needs ladder)'],
+=======
+        step: 2,
+        title: 'What type of service?',
+        key: 'service_type',
+        type: 'card_select',
+        options: ['Installation', 'Repair', 'Inspection'],
+      },
+      {
+        step: 3,
+        title: 'Is this an emergency?',
+        key: 'is_emergency',
+        type: 'button_select',
+        options: ['Yes', 'No'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -299,6 +374,7 @@ export const CATEGORIES = [
     baseRate: 40,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'What is the issue?',
         key: 'plumbing_type',
@@ -311,6 +387,20 @@ export const CATEGORIES = [
         key: 'location_type',
         type: 'button_select',
         options: ['Bathroom', 'Kitchen', 'Outdoors/Patio'],
+=======
+        step: 2,
+        title: 'What type of service?',
+        key: 'service_type',
+        type: 'card_select',
+        options: ['Installation', 'Repair', 'Inspection'],
+      },
+      {
+        step: 3,
+        title: 'Is this an emergency?',
+        key: 'is_emergency',
+        type: 'button_select',
+        options: ['Yes', 'No'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -324,6 +414,7 @@ export const CATEGORIES = [
     baseRate: 28,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'What do you need?',
         key: 'repair_type',
@@ -336,6 +427,20 @@ export const CATEGORIES = [
         key: 'item_count',
         type: 'button_select',
         options: ['1 to 2', '3 to 5', 'More than 5'],
+=======
+        step: 2,
+        title: 'What type?',
+        key: 'item_type',
+        type: 'card_select',
+        options: ['Blinds', 'Curtains', 'Glass', 'Frame'],
+      },
+      {
+        step: 3,
+        title: 'How many units?',
+        key: 'quantity',
+        type: 'button_select',
+        options: ['1', '2 – 3', '4 – 6', '7+'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -349,6 +454,7 @@ export const CATEGORIES = [
     baseRate: 32,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'Type of work?',
         key: 'carpentry_type',
@@ -361,6 +467,20 @@ export const CATEGORIES = [
         key: 'has_materials',
         type: 'button_select',
         options: ['Yes', 'No'],
+=======
+        step: 2,
+        title: 'What type of issue?',
+        key: 'carpentry_type',
+        type: 'card_select',
+        options: ['Hinges', 'Alignment', 'Custom build'],
+      },
+      {
+        step: 3,
+        title: 'Describe what you need',
+        key: 'description',
+        type: 'text_input',
+        placeholder: 'e.g. Build a bookshelf 2m wide, fix wardrobe door...',
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -374,6 +494,7 @@ export const CATEGORIES = [
     baseRate: 35,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'What type of floor?',
         key: 'floor_type',
@@ -386,6 +507,20 @@ export const CATEGORIES = [
         key: 'work_type',
         type: 'button_select',
         options: ['New installation', 'Repair broken pieces', 'Grout cleaning'],
+=======
+        step: 2,
+        title: 'What type of flooring?',
+        key: 'floor_type',
+        type: 'card_select',
+        options: ['Laminate', 'Tile', 'Wood'],
+      },
+      {
+        step: 3,
+        title: 'What do you need?',
+        key: 'scope',
+        type: 'button_select',
+        options: ['Repair', 'Install'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -399,6 +534,7 @@ export const CATEGORIES = [
     baseRate: 20,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'What do you need?',
         key: 'yard_type',
@@ -418,6 +554,20 @@ export const CATEGORIES = [
         key: 'yard_size',
         type: 'button_select',
         options: ['Small', 'Medium', 'Very large'],
+=======
+        step: 2,
+        title: 'How big is your yard?',
+        key: 'yard_size',
+        type: 'card_select',
+        options: ['Small', 'Medium', 'Large'],
+      },
+      {
+        step: 3,
+        title: 'What service do you need?',
+        key: 'service',
+        type: 'button_select',
+        options: ['Mowing', 'Weeding', 'Cleanup'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -464,6 +614,7 @@ export const CATEGORIES = [
       },
       {
         step: 2,
+<<<<<<< HEAD
         title: 'What is the service?',
         key: 'ac_service',
         type: 'button_select',
@@ -475,6 +626,19 @@ export const CATEGORIES = [
         key: 'btu',
         type: 'button_select',
         options: ['12,000 BTU', '18,000 BTU', '24,000+ BTU'],
+=======
+        title: 'What type of service?',
+        key: 'service_type',
+        type: 'card_select',
+        options: ['Installation', 'Repair', 'Inspection'],
+      },
+      {
+        step: 3,
+        title: 'Is this an emergency?',
+        key: 'is_emergency',
+        type: 'button_select',
+        options: ['Yes', 'No'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -513,6 +677,7 @@ export const CATEGORIES = [
     baseRate: 55,
     scoping_details: [
       {
+<<<<<<< HEAD
         step: 1,
         title: 'Type of work?',
         key: 'weld_type',
@@ -525,6 +690,20 @@ export const CATEGORIES = [
         key: 'onsite',
         type: 'button_select',
         options: ['Yes', 'No'],
+=======
+        step: 2,
+        title: 'What material?',
+        key: 'material',
+        type: 'card_select',
+        options: ['Steel', 'Aluminum'],
+      },
+      {
+        step: 3,
+        title: 'Where is the job?',
+        key: 'job_location',
+        type: 'button_select',
+        options: ['Indoors', 'Outdoors'],
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -533,25 +712,41 @@ export const CATEGORIES = [
 // ── CATEGORY HELPERS ──────────────────────────────────────────────────────────
 export const getCategoryById = (id) => CATEGORIES.find((c) => c.id === id) || null;
 
-// ── HOME SCREEN SECTIONS ──────────────────────────────────────────────────────
+// ── HOME SCREEN CAROUSEL SECTIONS ────────────────────────────────────────────
+// Each section renders as a horizontal FlatList carousel.
+// The final "All Categories" grid is rendered separately in HomeScreen.
 export const HOME_SECTIONS = [
   {
     id: 's1',
-    title: 'Most Popular',
-    subtitle: 'Top picks in your area',
-    categoryIds: ['c2', 'c1', 'c17', 'c16', 'c10'],
+    title: 'Spring Favorites',
+    titleEs: 'Favoritos de temporada',
+    subtitle: 'Top picks right now',
+    categoryIds: ['c2', 'c1', 'c14', 'c3', 'c16'],
+    // Cleaning, TV Mounting, Yard Work, Interior Painting, AC Repair
   },
   {
     id: 's2',
-    title: 'Moving Checklist',
+    title: 'Your Moving Checklist',
+    titleEs: 'Tu lista de mudanza',
     subtitle: 'Everything to settle in fast',
-    categoryIds: ['c5', 'c6', 'c7', 'c12', 'c1'],
+    categoryIds: ['c5', 'c6', 'c7', 'c1', 'c12'],
+    // Flat Rate Moving, Help Moving, Lifting Heavy Items, TV Mounting, Light Carpentry
   },
   {
     id: 's3',
-    title: 'Home Improvement',
-    subtitle: 'Upgrade your space',
-    categoryIds: ['c16', 'c3', 'c4', 'c13', 'c15'],
+    title: 'Home Improvement Help',
+    titleEs: 'Mejoras del hogar',
+    subtitle: 'Fix and upgrade your space',
+    categoryIds: ['c3', 'c4', 'c9', 'c10', 'c13', 'c15'],
+    // Interior Painting, Drywall Repair, Electrical, Plumbing, Floor/Tile, Exterior Painting
+  },
+  {
+    id: 's4',
+    title: 'Quick Fixes',
+    titleEs: 'Reparaciones rápidas',
+    subtitle: 'Small jobs, fast turnaround',
+    categoryIds: ['c8', 'c11', 'c17', 'c18', 'c10'],
+    // Door/Cabinet, Window/Blind, Locksmith, Welder, Plumbing
   },
 ];
 

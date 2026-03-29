@@ -1,208 +1,240 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //  src/screens/HomeScreen.js
+//
+//  ┌──────────────────────────────────────────┐  ← STICKY (never scrolls)
+//  │  [text_logo.png  large centered]         │
+//  │  Hi [Name], What can we help you with?   │
+//  │  [           Search bar              ]   │
+//  └──────────────────────────────────────────┘
+//  ┌──────────────────────────────────────────┐  ← SCROLLABLE
+//  │  Spring Favorites       →orizontal list  │
+//  │  Moving Checklist       →orizontal list  │
+//  │  Home Improvement       →orizontal list  │
+//  │  Quick Fixes            →orizontal list  │
+//  │  All Categories         2-column grid    │
+//  └──────────────────────────────────────────┘
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  Image,
+  View, Text, StyleSheet, ScrollView, FlatList,
+  TouchableOpacity, Image,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { CATEGORIES } from '../../mockData';
+import { HOME_SECTIONS, CATEGORIES, getSectionCategories } from '../../mockData';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../theme';
+import { LogoText } from '../components/Logo';
+import i18n from '../i18n';
+import { useAuth } from '../context/AuthContext';
 
-// ── Grid tile ─────────────────────────────────────────────────────────────────
-function ServiceTile({ item, onPress }) {
+const CARD_SIZE = 130;
+
+// ── Carousel card ─────────────────────────────────────────────────────────────
+function CarouselCard({ category, onPress }) {
   return (
-    <TouchableOpacity style={styles.tile} onPress={onPress} activeOpacity={0.82}>
-      <Image
-        source={{ uri: item.image }}
-        style={styles.tileImage}
-        resizeMode="cover"
-      />
-      <Text style={styles.tileLabel} numberOfLines={2}>
-        {item.name}
-      </Text>
+    <TouchableOpacity
+      style={styles.carouselCard}
+      onPress={() => onPress(category)}
+      activeOpacity={0.82}
+    >
+      <Image source={{ uri: category.image }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+      <View style={styles.carouselOverlay} />
+      <Text style={styles.carouselLabel} numberOfLines={2}>{category.name}</Text>
     </TouchableOpacity>
+  );
+}
+
+// ── Horizontal carousel section (NO "See All" button) ────────────────────────
+function CarouselSection({ section, onPress }) {
+  const cats  = getSectionCategories(section);
+  const title = i18n.locale.startsWith('es') && section.titleEs
+    ? section.titleEs
+    : section.title;
+
+  return (
+    <View style={styles.carouselSection}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      <FlatList
+        data={cats}
+        keyExtractor={(item) => item.id}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.carouselList}
+        renderItem={({ item }) => <CarouselCard category={item} onPress={onPress} />}
+        ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+      />
+    </View>
+  );
+}
+
+// ── All Categories 2-col grid ─────────────────────────────────────────────────
+function AllCategoriesGrid({ onPress }) {
+  const rows = [];
+  for (let i = 0; i < CATEGORIES.length; i += 2) rows.push(CATEGORIES.slice(i, i + 2));
+
+  return (
+    <View style={styles.allCatsSection}>
+      <Text style={styles.sectionTitle}>{i18n.t('home.allCategories')}</Text>
+      <View style={styles.gridContainer}>
+        {rows.map((row, ri) => (
+          <View key={ri} style={styles.gridRow}>
+            {row.map((cat) => (
+              <TouchableOpacity key={cat.id} style={styles.gridTile} onPress={() => onPress(cat)} activeOpacity={0.82}>
+                <Image source={{ uri: cat.image }} style={styles.gridImage} resizeMode="cover" />
+                <Text style={styles.gridLabel} numberOfLines={2}>{cat.name}</Text>
+              </TouchableOpacity>
+            ))}
+            {row.length === 1 && <View style={styles.gridTileSpacer} />}
+          </View>
+        ))}
+      </View>
+    </View>
   );
 }
 
 // ── Main Screen ───────────────────────────────────────────────────────────────
 export default function HomeScreen({ navigation }) {
-  const insets = useSafeAreaInsets();
+  const insets    = useSafeAreaInsets();
+  const { user }  = useAuth();
+  const firstName = user?.name?.split(' ')[0] ?? 'there';
 
-  const handleCategoryPress = (category) => {
-    navigation.navigate('TaskLocation', { category });
-  };
+  const handleCategoryPress = (category) => navigation.navigate('TaskLocation', { category });
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
-      >
-        {/* ── Top bar ──────────────────────────────────────────────────── */}
-        <View style={styles.topBar}>
-          <TouchableOpacity style={styles.locationPill} activeOpacity={0.7}>
-            <Ionicons name="location-sharp" size={14} color={COLORS.accent} />
-            <Text style={styles.locationText}>Caracas, VE</Text>
-            <Ionicons name="chevron-down" size={13} color={COLORS.textSecondary} />
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.avatarBtn}
-            activeOpacity={0.75}
-            onPress={() => navigation.navigate('ProfileTab')}
-          >
-            <View style={styles.avatarCircle}>
-              <Ionicons name="person" size={17} color={COLORS.textOnPrimary} />
-            </View>
-          </TouchableOpacity>
+      {/* ══════════════  STICKY HEADER  ══════════════ */}
+      <View style={styles.stickyHeader}>
+        {/* Row 1: Large text logo */}
+        <View style={styles.logoRow}>
+          <LogoText fontSize={26} color={COLORS.primary} />
         </View>
 
-        {/* ── Search bar ───────────────────────────────────────────────── */}
+        {/* Row 2: Greeting */}
+        <Text style={styles.greeting} numberOfLines={1}>
+          {i18n.t('home.greeting', { name: firstName })}
+        </Text>
+
+        {/* Row 3: Search bar */}
         <TouchableOpacity
           style={styles.searchBar}
           onPress={() => navigation.navigate('Search')}
-          activeOpacity={0.82}
+          activeOpacity={0.85}
         >
-          <View style={styles.searchIconWrap}>
-            <Ionicons name="search" size={17} color={COLORS.textSecondary} />
-          </View>
+          <Ionicons name="search" size={16} color={COLORS.textSecondary} style={{ marginRight: 8 }} />
           <Text style={styles.searchPlaceholder} numberOfLines={1}>
-            Try 'plumber' or 'mount TV'
+            {i18n.t('home.searchPlaceholder')}
           </Text>
         </TouchableOpacity>
+      </View>
 
-        {/* ── Section header ────────────────────────────────────────────── */}
-        <Text style={styles.sectionHeader}>Your Home Projects</Text>
-
-        {/* ── 2-column grid of all 18 categories ───────────────────────── */}
-        <FlatList
-          data={CATEGORIES}
-          renderItem={({ item }) => (
-            <ServiceTile item={item} onPress={() => handleCategoryPress(item)} />
-          )}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-          columnWrapperStyle={styles.row}
-          contentContainerStyle={styles.grid}
-          scrollEnabled={false}
-        />
+      {/* ══════════════  SCROLLABLE CONTENT  ══════════════ */}
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {HOME_SECTIONS.map((section) => (
+          <CarouselSection key={section.id} section={section} onPress={handleCategoryPress} />
+        ))}
+        <AllCategoriesGrid onPress={handleCategoryPress} />
       </ScrollView>
     </View>
   );
 }
 
 // ── Styles ────────────────────────────────────────────────────────────────────
-const TILE_GAP = 12;
-
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
+  root: { flex: 1, backgroundColor: COLORS.background },
 
-  // Top bar
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  // Sticky header
+  stickyHeader: {
+    backgroundColor: COLORS.white,
     paddingHorizontal: 16,
     paddingTop: 10,
-    paddingBottom: 4,
-    backgroundColor: COLORS.white,
+    paddingBottom: 14,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: COLORS.border,
+    ...SHADOW.bar,
+    gap: 8,
   },
-  locationPill: {
-    flexDirection: 'row',
+  logoRow: {
     alignItems: 'center',
-    gap: 4,
+    paddingVertical: 2,
   },
-  locationText: {
-    fontSize: 15,
-    fontWeight: FONTS.semibold,
+  greeting: {
+    fontFamily: FONTS.familyMedium,
+    fontSize: 14,
     color: COLORS.textPrimary,
+    textAlign: 'center',
   },
-  avatarBtn: { padding: 2 },
-  avatarCircle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: COLORS.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  // Search bar
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
-    height: 52,
-    marginHorizontal: 16,
-    marginTop: 14,
-    marginBottom: 24,
-    borderWidth: 1,
+    height: 46,
+    borderWidth: 1.5,
     borderColor: COLORS.border,
-    ...SHADOW.card,
-  },
-  searchIconWrap: {
-    width: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 14,
+    marginTop: 2,
   },
   searchPlaceholder: {
     flex: 1,
+    fontFamily: FONTS.family,
     fontSize: 14,
     color: COLORS.textSecondary,
   },
 
-  // Section header
-  sectionHeader: {
-    fontSize: 20,
-    fontWeight: FONTS.bold,
+  // Scroll
+  scrollContent: { paddingBottom: 40 },
+
+  // Carousel section
+  carouselSection: { marginTop: 22 },
+  sectionTitle: {
+    fontFamily: FONTS.familyBold,
+    fontSize: 17,
     color: COLORS.primary,
     paddingHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 10,
   },
-
-  // Grid
-  grid: {
-    paddingHorizontal: 16,
+  carouselList: { paddingHorizontal: 16 },
+  carouselCard: {
+    width: CARD_SIZE,
+    height: CARD_SIZE,
+    borderRadius: RADIUS.md,
+    overflow: 'hidden',
+    justifyContent: 'flex-end',
+    ...SHADOW.card,
+  },
+  carouselOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(26,55,77,0.44)',
+  },
+  carouselLabel: {
+    fontFamily: FONTS.familyBold,
+    fontSize: 12,
+    color: COLORS.white,
+    paddingHorizontal: 8,
     paddingBottom: 8,
-  },
-  row: {
-    justifyContent: 'space-between',
-    marginBottom: TILE_GAP,
+    lineHeight: 16,
   },
 
-  // Tile
-  tile: {
+  // All Categories grid
+  allCatsSection: { marginTop: 28, paddingHorizontal: 16 },
+  gridContainer: { marginTop: 10, gap: 10 },
+  gridRow: { flexDirection: 'row', gap: 10 },
+  gridTile: {
     flex: 1,
-    maxWidth: '48.5%',
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     overflow: 'hidden',
     ...SHADOW.card,
   },
-  tileImage: {
-    width: '100%',
-    height: 110,
-    backgroundColor: COLORS.surface,
-  },
-  tileLabel: {
+  gridTileSpacer: { flex: 1 },
+  gridImage: { width: '100%', height: 100, backgroundColor: COLORS.surface },
+  gridLabel: {
+    fontFamily: FONTS.familySemibold,
     fontSize: 13,
-    fontWeight: FONTS.semibold,
     color: COLORS.textPrimary,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    padding: 10,
     lineHeight: 18,
   },
 });

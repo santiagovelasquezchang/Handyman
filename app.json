@@ -25,7 +25,13 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+<<<<<<< HEAD
     "plugins": [],
     "newArchEnabled": false
+=======
+    "plugins": [
+      "expo-localization"
+    ]
+>>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
   }
 }
