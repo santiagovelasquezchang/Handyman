@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  App.js  –  Navigation root (updated in Phase 2)
-//  Real screens replace stubs as each phase completes.
+//  App.js  –  Navigation root
+//  Palette: Navy (#1A374D) + Orange (#FF7F3F)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
@@ -14,70 +14,77 @@ import { TASK_HISTORY } from './mockData';
 
 const SCHEDULED_COUNT = TASK_HISTORY.scheduled.length;
 
-// ── REAL SCREENS ─────────────────────────────────────────────────────────────
-// Phase 2
+// ── BRAND COLORS (mirrors src/theme.js) ──────────────────────────────────────
+const NAV_COLORS = {
+  primary:    '#1A374D',   // Navy
+  accent:     '#FF7F3F',   // Orange
+  white:      '#FFFFFF',
+  background: '#F1F1F1',
+  border:     '#E2E2E2',
+  inactive:   '#BCBCBC',
+};
+
+// ── MAIN TAB SCREENS ──────────────────────────────────────────────────────────
 import HomeScreen      from './src/screens/HomeScreen';
 import SearchScreen    from './src/screens/SearchScreen';
-// Phase 6 – Tab screens
 import TasksScreen     from './src/screens/TasksScreen';
 import MyTaskersScreen from './src/screens/MyTaskersScreen';
 import ProfileScreen   from './src/screens/ProfileScreen';
-// Phase 3 – Booking funnel
+
+// ── PROFILE SUB-SCREENS ───────────────────────────────────────────────────────
+import AccountSettingsScreen      from './src/screens/profile/AccountSettingsScreen';
+import SavedAddressesScreen       from './src/screens/profile/SavedAddressesScreen';
+import PaymentMethodsScreen       from './src/screens/profile/PaymentMethodsScreen';
+import NotificationSettingsScreen from './src/screens/profile/NotificationSettingsScreen';
+import InviteFriendsScreen        from './src/screens/profile/InviteFriendsScreen';
+import HelpCenterScreen           from './src/screens/profile/HelpCenterScreen';
+
+// ── BOOKING FUNNEL ────────────────────────────────────────────────────────────
 import TaskLocationScreen       from './src/screens/booking/TaskLocationScreen';
+// Legacy category-specific scope screens (Cleaning funnel – kept for compat)
 import TaskScopeRoomsScreen     from './src/screens/booking/TaskScopeRoomsScreen';
 import TaskScopeBathsScreen     from './src/screens/booking/TaskScopeBathsScreen';
 import TaskScopeConditionScreen from './src/screens/booking/TaskScopeConditionScreen';
 import TaskScopePetsScreen      from './src/screens/booking/TaskScopePetsScreen';
 import TaskLoadingScreen        from './src/screens/booking/TaskLoadingScreen';
-// Phase 4 – Tasker selection
-import TaskerListScreen    from './src/screens/booking/TaskerListScreen';
-import TaskerProfileScreen from './src/screens/booking/TaskerProfileScreen';
-// Phase 5 – Booking close
-import TaskDetailsScreen   from './src/screens/booking/TaskDetailsScreen';
-import ReviewConfirmScreen from './src/screens/booking/ReviewConfirmScreen';
-
-// ── THEME ─────────────────────────────────────────────────────────────────────
-const COLORS = {
-  primary:      '#007A5E',
-  white:        '#FFFFFF',
-  border:       '#E8E8E8',
-  textPrimary:  '#1A1A1A',
-  inactive:     '#BCBCBC',
-  tabBar:       '#FFFFFF',
-};
+import TaskerListScreen         from './src/screens/booking/TaskerListScreen';
+import TaskerProfileScreen      from './src/screens/booking/TaskerProfileScreen';
+import TaskDetailsScreen        from './src/screens/booking/TaskDetailsScreen';
+import ReviewConfirmScreen      from './src/screens/booking/ReviewConfirmScreen';
 
 // ── NAVIGATOR INSTANCES ───────────────────────────────────────────────────────
 const RootStack = createNativeStackNavigator();
 const Tab       = createBottomTabNavigator();
 
 // ── BOTTOM TAB NAVIGATOR ──────────────────────────────────────────────────────
+// Tab bar is intentionally taller than the OS default for visual emphasis.
 function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor:   COLORS.primary,
-        tabBarInactiveTintColor: COLORS.inactive,
+        tabBarActiveTintColor:   NAV_COLORS.primary,
+        tabBarInactiveTintColor: NAV_COLORS.inactive,
         tabBarStyle: {
-          backgroundColor: COLORS.tabBar,
-          borderTopColor:  COLORS.border,
+          backgroundColor: NAV_COLORS.white,
+          borderTopColor:  NAV_COLORS.border,
           borderTopWidth:  1,
-          height:          60,
-          paddingBottom:   8,
-          paddingTop:      6,
+          height:          72,      // taller than standard 49pt
+          paddingBottom:   12,
+          paddingTop:      8,
         },
         tabBarLabelStyle: {
-          fontSize:   10,
+          fontSize:   11,
           fontWeight: '600',
         },
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused, color }) => {
           const icons = {
-            HomeTab:       focused ? 'home'               : 'home-outline',
-            TasksTab:      focused ? 'calendar'           : 'calendar-outline',
-            MyTaskersTab:  focused ? 'people'             : 'people-outline',
-            ProfileTab:    focused ? 'person-circle'      : 'person-circle-outline',
+            HomeTab:      focused ? 'home'          : 'home-outline',
+            TasksTab:     focused ? 'calendar'      : 'calendar-outline',
+            MyTaskersTab: focused ? 'people'        : 'people-outline',
+            ProfileTab:   focused ? 'person-circle' : 'person-circle-outline',
           };
-          return <Ionicons name={icons[route.name]} size={22} color={color} />;
+          return <Ionicons name={icons[route.name]} size={24} color={color} />;
         },
       })}
     >
@@ -93,7 +100,7 @@ function MainTabs() {
           title: 'Tasks',
           tabBarBadge: SCHEDULED_COUNT > 0 ? SCHEDULED_COUNT : undefined,
           tabBarBadgeStyle: {
-            backgroundColor: COLORS.primary,
+            backgroundColor: NAV_COLORS.accent,
             fontSize: 10,
             minWidth: 16,
             height: 16,
@@ -115,28 +122,27 @@ function MainTabs() {
   );
 }
 
-// ── ROOT STACK NAVIGATOR ──────────────────────────────────────────────────────
-// The root stack sits above the tabs so the booking funnel and search modal
-// can cover the tab bar entirely when needed.
+// ── ROOT STACK ────────────────────────────────────────────────────────────────
+// Sits above the tabs so modals and funnels cover the tab bar entirely.
 function RootNavigator() {
   return (
     <RootStack.Navigator
       screenOptions={{
-        headerStyle:        { backgroundColor: COLORS.white },
-        headerTintColor:    COLORS.textPrimary,
-        headerTitleStyle:   { fontWeight: '700', fontSize: 17 },
+        headerStyle:         { backgroundColor: NAV_COLORS.white },
+        headerTintColor:     NAV_COLORS.primary,
+        headerTitleStyle:    { fontWeight: '700', fontSize: 17, color: NAV_COLORS.primary },
         headerShadowVisible: false,
-        contentStyle:       { backgroundColor: COLORS.white },
+        contentStyle:        { backgroundColor: NAV_COLORS.background },
       }}
     >
-      {/* ── Main app (tabs) – no header at root level ── */}
+      {/* ── Main app (tabs) ── */}
       <RootStack.Screen
         name="MainTabs"
         component={MainTabs}
         options={{ headerShown: false }}
       />
 
-      {/* ── Search – presented as a full-screen modal ── */}
+      {/* ── Search modal ── */}
       <RootStack.Screen
         name="Search"
         component={SearchScreen}
@@ -147,39 +153,101 @@ function RootNavigator() {
         }}
       />
 
-      {/* ── Booking Funnel ── */}
+      {/* ────────────────────────────────────────────────────────────────────
+          PROFILE SUB-STACK
+          Navigate from ProfileScreen: navigation.navigate('AccountSettings')
+      ──────────────────────────────────────────────────────────────────── */}
+      <RootStack.Screen
+        name="AccountSettings"
+        component={AccountSettingsScreen}
+        options={{ title: 'Account Settings' }}
+      />
+      <RootStack.Screen
+        name="SavedAddresses"
+        component={SavedAddressesScreen}
+        options={{ title: 'Saved Addresses' }}
+      />
+      <RootStack.Screen
+        name="PaymentMethods"
+        component={PaymentMethodsScreen}
+        options={{ title: 'Payment Methods' }}
+      />
+      <RootStack.Screen
+        name="NotificationSettings"
+        component={NotificationSettingsScreen}
+        options={{ title: 'Notifications' }}
+      />
+      <RootStack.Screen
+        name="InviteFriends"
+        component={InviteFriendsScreen}
+        options={{ title: 'Invite Friends' }}
+      />
+      <RootStack.Screen
+        name="HelpCenter"
+        component={HelpCenterScreen}
+        options={{ title: 'Help Center' }}
+      />
+
+      {/* ────────────────────────────────────────────────────────────────────
+          BOOKING FUNNEL
+          Step 1  – TaskLocation          (fixed)
+          Steps 2-4
+            Cleaning category    → TaskScopeRooms → TaskScopeBaths
+                                 → TaskScopeCondition → TaskScopePets
+            All other categories → TaskScopeStep (generic, reads
+                                   category.scoping_details[stepIndex])
+          Step 5  – TaskLoading           (spinner)
+          Step 6  – TaskerList
+          Step 7  – TaskerProfile
+          Step 8  – TaskDetails
+          Step 9  – ReviewConfirm
+      ──────────────────────────────────────────────────────────────────── */}
       <RootStack.Screen
         name="TaskLocation"
         component={TaskLocationScreen}
         options={{ title: "Where's the job?" }}
       />
+
+      {/* Cleaning-specific scope screens (legacy) */}
       <RootStack.Screen
         name="TaskScopeRooms"
         component={TaskScopeRoomsScreen}
-        options={{ title: '' }}
+        options={{ title: '', headerBackTitle: '' }}
       />
       <RootStack.Screen
         name="TaskScopeBaths"
         component={TaskScopeBathsScreen}
-        options={{ title: '' }}
+        options={{ title: '', headerBackTitle: '' }}
       />
       <RootStack.Screen
         name="TaskScopeCondition"
         component={TaskScopeConditionScreen}
-        options={{ title: '' }}
+        options={{ title: '', headerBackTitle: '' }}
       />
       <RootStack.Screen
         name="TaskScopePets"
         component={TaskScopePetsScreen}
-        options={{ title: '' }}
+        options={{ title: '', headerBackTitle: '' }}
       />
+
+      {/*
+        Generic dynamic scope screen — "TaskScopeStep"
+        Params: { category, stepIndex, answers }
+        Reads category.scoping_details[stepIndex] to render each question.
+        On select → pushes TaskScopeStep (next step) or TaskLoading.
+        Full implementation: src/screens/booking/TaskScopeStepScreen.js (Phase 3)
+        Using TaskScopeRoomsScreen as placeholder until that file is built.
+      */}
+      <RootStack.Screen
+        name="TaskScopeStep"
+        component={TaskScopeRoomsScreen}
+        options={{ title: '', headerBackTitle: '' }}
+      />
+
       <RootStack.Screen
         name="TaskLoading"
         component={TaskLoadingScreen}
-        options={{
-          headerShown: false,
-          gestureEnabled: false, // prevent swipe-back during loading
-        }}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
       <RootStack.Screen
         name="TaskerList"
@@ -189,12 +257,12 @@ function RootNavigator() {
       <RootStack.Screen
         name="TaskerProfile"
         component={TaskerProfileScreen}
-        options={{ title: '' }}
+        options={{ title: '', headerBackTitle: '' }}
       />
       <RootStack.Screen
         name="TaskDetails"
         component={TaskDetailsScreen}
-        options={{ title: 'Task details' }}
+        options={{ title: 'Task Details' }}
       />
       <RootStack.Screen
         name="ReviewConfirm"

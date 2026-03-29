@@ -19,24 +19,21 @@ const TOTAL_TASKS = Object.values(TASK_HISTORY).flat().length;
 import { COLORS, FONTS, RADIUS, SHADOW } from '../theme';
 
 // ── Settings data ─────────────────────────────────────────────────────────────
+// `route` is the React Navigation screen name to push; omit for alert-only rows.
 const SECTIONS = [
   [
-    { id: 'account',   icon: 'person-outline',           label: 'Account',          value: USER_PROFILE.email },
-    { id: 'security',  icon: 'shield-checkmark-outline', label: 'Account Security' },
-    { id: 'password',  icon: 'lock-closed-outline',      label: 'Change Password' },
+    { id: 'AccountSettings',      icon: 'person-outline',             label: 'Account Settings',      value: USER_PROFILE.email },
+    { id: 'SavedAddresses',       icon: 'location-outline',           label: 'Saved Addresses' },
+    { id: 'PaymentMethods',       icon: 'card-outline',               label: 'Payment Methods' },
+    { id: 'NotificationSettings', icon: 'notifications-outline',      label: 'Notification Settings' },
   ],
   [
-    { id: 'payment',   icon: 'card-outline',             label: 'Payment' },
-    { id: 'promos',    icon: 'pricetag-outline',         label: 'Promos' },
+    { id: 'InviteFriends',        icon: 'gift-outline',               label: 'Invite Friends' },
+    { id: 'HelpCenter',           icon: 'help-circle-outline',        label: 'Help Center' },
   ],
   [
-    { id: 'notifs',    icon: 'notifications-outline',    label: 'Notifications' },
-    { id: 'support',   icon: 'help-circle-outline',      label: 'Support' },
-    { id: 'about',     icon: 'information-circle-outline', label: 'About' },
-  ],
-  [
-    { id: 'become',    icon: 'briefcase-outline',        label: 'Become a Tasker', accent: true },
-    { id: 'logout',    icon: 'log-out-outline',          label: 'Log Out',          danger: true },
+    { id: 'become',               icon: 'briefcase-outline',          label: 'Become a Tasker', accent: true },
+    { id: 'logout',               icon: 'log-out-outline',            label: 'Log Out',          danger: true },
   ],
 ];
 
@@ -67,7 +64,7 @@ function ProfileHeader() {
     <View style={styles.header}>
       <InitialsAvatar name={USER_PROFILE.name} size={80} />
       <Text style={styles.userName}>{USER_PROFILE.name}</Text>
-      <Text style={styles.userPhone}>{USER_PROFILE.phone}</Text>
+      <Text style={styles.userPhone}>{USER_PROFILE.memberSince ? `Member since ${USER_PROFILE.memberSince}` : USER_PROFILE.phone}</Text>
       <TouchableOpacity style={styles.editBtn} activeOpacity={0.75}>
         <Ionicons name="create-outline" size={14} color={COLORS.primary} />
         <Text style={styles.editBtnText}>Edit profile</Text>
@@ -81,13 +78,13 @@ function SettingsRow({ item, onPress, isLast }) {
   const iconBg = item.danger
     ? '#FFF0F0'
     : item.accent
-    ? COLORS.primaryLight
+    ? COLORS.accentLight
     : COLORS.surface;
 
   const iconColor = item.danger
-    ? '#D93025'
+    ? COLORS.error
     : item.accent
-    ? COLORS.primary
+    ? COLORS.accent
     : COLORS.textSecondary;
 
   const labelColor = item.danger ? '#D93025' : COLORS.textPrimary;
@@ -154,8 +151,14 @@ export default function ProfileScreen({ navigation }) {
           },
         ]
       );
+      return;
     }
-    // Other items: no-op in mock app
+    if (item.id === 'become') {
+      Alert.alert('Become a Tasker', 'Tasker registration coming soon!');
+      return;
+    }
+    // All other rows use their id as the route name
+    navigation.navigate(item.id);
   };
 
   return (
