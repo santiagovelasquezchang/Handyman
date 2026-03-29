@@ -1,0 +1,69 @@
+{
+  "splash": {
+    "tagline": "Ayuda confiable, cuando la necesites."
+  },
+  "welcome": {
+    "title": "Handyman",
+    "subtitle": "Ayuda confiable para cualquier tarea en Venezuela",
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "noAccount": "¿No tienes cuenta?"
+  },
+  "login": {
+    "title": "Bienvenido de vuelta",
+    "subtitle": "Inicia sesión en tu cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "btn": "Iniciar sesión",
+    "noAccount": "¿No tienes cuenta?",
+    "signupLink": "Registrarse"
+  },
+  "signup": {
+    "title": "Crear cuenta",
+    "subtitle": "Obtén ayuda para cualquier tarea",
+    "name": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Número de teléfono",
+    "password": "Contraseña",
+    "btn": "Crear cuenta",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "loginLink": "Iniciar sesión"
+  },
+  "home": {
+    "brandName": "HANDYMAN",
+    "greeting": "¡Hola, %{name}! ¿En qué te ayudamos?",
+    "searchPlaceholder": "Prueba 'plomero' o 'instalar TV'",
+    "allCategories": "Todas las categorías",
+    "seeAll": "Ver todos",
+    "location": "Caracas, VE"
+  },
+  "tabs": {
+    "home": "Inicio",
+    "tasks": "Tareas",
+    "myTaskers": "Mis Taskers",
+    "profile": "Perfil"
+  },
+  "tasks": {
+    "scheduled": "Programadas",
+    "completed": "Completadas",
+    "noCurrent": "Sin tareas activas",
+    "noCurrentSub": "Reserva una tarea y aparecerá aquí.",
+    "noCompleted": "Sin tareas completadas",
+    "noCompletedSub": "Tus tareas completadas aparecerán aquí.",
+    "browse": "Ver servicios"
+  },
+  "myTaskers": {
+    "favorites": "Favoritos",
+    "past": "Anteriores"
+  },
+  "profile": {
+    "editProfile": "Editar perfil",
+    "taskers": "Taskers",
+    "tasks": "Tareas",
+    "favorites": "Favoritos",
+    "version": "Handyman · v2.0.0",
+    "logout": "Cerrar sesión",
+    "logoutConfirm": "¿Seguro que quieres cerrar sesión?"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "splash": {
+    "tagline": "Trusted help, anytime."
+  },
+  "welcome": {
+    "title": "Handyman",
+    "subtitle": "Trusted help for any task in Venezuela",
+    "login": "Login",
+    "signup": "Sign Up",
+    "noAccount": "Don't have an account?"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Log in to your account",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "btn": "Login",
+    "noAccount": "Don't have an account?",
+    "signupLink": "Sign Up"
+  },
+  "signup": {
+    "title": "Create Account",
+    "subtitle": "Get help for any task",
+    "name": "Full Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "password": "Password",
+    "btn": "Create Account",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Login"
+  },
+  "home": {
+    "brandName": "HANDYMAN",
+    "greeting": "Hi, %{name}! What can we help you with?",
+    "searchPlaceholder": "Try 'plumber' or 'mount TV'",
+    "allCategories": "All Categories",
+    "seeAll": "See All",
+    "location": "Caracas, VE"
+  },
+  "tabs": {
+    "home": "Home",
+    "tasks": "Tasks",
+    "myTaskers": "My Taskers",
+    "profile": "Profile"
+  },
+  "tasks": {
+    "scheduled": "Scheduled",
+    "completed": "Completed",
+    "noCurrent": "No Current Tasks",
+    "noCurrentSub": "Book a task and see it here.",
+    "noCompleted": "No Completed Tasks",
+    "noCompletedSub": "Your completed tasks will appear here.",
+    "browse": "Browse services"
+  },
+  "myTaskers": {
+    "favorites": "Favorites",
+    "past": "Past Taskers"
+  },
+  "profile": {
+    "editProfile": "Edit profile",
+    "taskers": "Taskers",
+    "tasks": "Tasks",
+    "favorites": "Favorites",
+    "version": "Handyman · v2.0.0",
+    "logout": "Log Out",
+    "logoutConfirm": "Are you sure you want to log out?"
+  }
+}

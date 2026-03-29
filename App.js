@@ -1,9 +1,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  App.js  –  Navigation root
+//  App.js  –  Navigation root  (Phase 1 Redux)
+//  Structure:  Splash → AuthStack (Welcome/Login/Signup)
+//                     → AppStack  (MainTabs + booking funnel + profile)
 //  Palette: Navy (#1A374D) + Orange (#FF7F3F)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import React from 'react';
+import React, { useState } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import useFonts from './src/hooks/useFonts';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,6 +15,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { TASK_HISTORY } from './mockData';
+
+// Auth context + new screens
+import { AuthProvider, useAuth } from './src/context/AuthContext';
+import SplashScreen  from './src/screens/SplashScreen';
+import WelcomeScreen from './src/screens/auth/WelcomeScreen';
+import LoginScreen   from './src/screens/auth/LoginScreen';
+import SignupScreen  from './src/screens/auth/SignupScreen';
 
 const SCHEDULED_COUNT = TASK_HISTORY.scheduled.length;
 
@@ -53,8 +64,21 @@ import TaskDetailsScreen        from './src/screens/booking/TaskDetailsScreen';
 import ReviewConfirmScreen      from './src/screens/booking/ReviewConfirmScreen';
 
 // ── NAVIGATOR INSTANCES ───────────────────────────────────────────────────────
-const RootStack = createNativeStackNavigator();
-const Tab       = createBottomTabNavigator();
+const OuterStack = createNativeStackNavigator(); // Splash / Auth / App
+const AuthStack  = createNativeStackNavigator(); // Welcome / Login / Signup
+const RootStack  = createNativeStackNavigator(); // Tabs + funnel + profile
+const Tab        = createBottomTabNavigator();
+
+// ── AUTH NAVIGATOR ─────────────────────────────────────────────────────────────
+function AuthNavigator() {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="Welcome" component={WelcomeScreen} />
+      <AuthStack.Screen name="Login"   component={LoginScreen} />
+      <AuthStack.Screen name="Signup"  component={SignupScreen} />
+    </AuthStack.Navigator>
+  );
+}
 
 // ── BOTTOM TAB NAVIGATOR ──────────────────────────────────────────────────────
 // Tab bar is intentionally taller than the OS default for visual emphasis.
@@ -63,13 +87,13 @@ function MainTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor:   NAV_COLORS.primary,
+        tabBarActiveTintColor:   NAV_COLORS.accent,
         tabBarInactiveTintColor: NAV_COLORS.inactive,
         tabBarStyle: {
           backgroundColor: NAV_COLORS.white,
           borderTopColor:  NAV_COLORS.border,
           borderTopWidth:  1,
-          height:          72,      // taller than standard 49pt
+          height:          75,
           paddingBottom:   12,
           paddingTop:      8,
         },
@@ -122,9 +146,8 @@ function MainTabs() {
   );
 }
 
-// ── ROOT STACK ────────────────────────────────────────────────────────────────
-// Sits above the tabs so modals and funnels cover the tab bar entirely.
-function RootNavigator() {
+// ── MAIN APP STACK (tabs + funnel + profile sub-screens) ─────────────────────
+function AppNavigator() {
   return (
     <RootStack.Navigator
       screenOptions={{
@@ -273,14 +296,46 @@ function RootNavigator() {
   );
 }
 
+// ── ROOT NAVIGATOR (decides Splash → Auth or App) ────────────────────────────
+function RootNavigator() {
+  const [showSplash, setShowSplash] = useState(true);
+  const { isLoggedIn } = useAuth();
+
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
+
+  return (
+    <OuterStack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
+      {isLoggedIn ? (
+        <OuterStack.Screen name="App"  component={AppNavigator} />
+      ) : (
+        <OuterStack.Screen name="Auth" component={AuthNavigator} />
+      )}
+    </OuterStack.Navigator>
+  );
+}
+
 // ── APP ROOT ──────────────────────────────────────────────────────────────────
 export default function App() {
+  const [fontsLoaded] = useFonts();
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF' }}>
+        <ActivityIndicator size="large" color="#FF7F3F" />
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaProvider>
-      <StatusBar style="dark" />
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <AuthProvider>
+      <SafeAreaProvider>
+        <StatusBar style="auto" />
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </AuthProvider>
   );
 }
