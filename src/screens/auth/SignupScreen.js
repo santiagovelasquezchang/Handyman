@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
-import { LogoMark } from '../../components/Logo';
+import { LogoFull } from '../../components/Logo';
 import i18n from '../../i18n';
 import { useAuth } from '../../context/AuthContext';
 
@@ -41,7 +41,7 @@ export default function SignupScreen({ navigation }) {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
           <View style={styles.logoBlock}>
-            <LogoMark size={80} />
+            <LogoFull />
             <Text style={styles.title}>{i18n.t('signup.title')}</Text>
             <Text style={styles.subtitle}>{i18n.t('signup.subtitle')}</Text>
           </View>

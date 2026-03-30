@@ -7,7 +7,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
-import { LogoMark } from '../../components/Logo';
+import { LogoFull } from '../../components/Logo';
 import i18n from '../../i18n';
 
 export default function WelcomeScreen({ navigation }) {
@@ -16,8 +16,7 @@ export default function WelcomeScreen({ navigation }) {
       <StatusBar style="dark" />
 
       <View style={styles.centerBlock}>
-        <LogoMark size={120} />
-        <Text style={styles.appName}>HANDYMAN</Text>
+        <LogoFull />
         <Text style={styles.subtitle}>{i18n.t('welcome.subtitle')}</Text>
       </View>
 

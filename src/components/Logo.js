@@ -9,20 +9,22 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS } from '../theme';
+
+const SW = Dimensions.get('window').width;
 
 // ── Detect if asset exists (returns false when file is missing) ───────────────
 let FULL_LOGO    = null;
 let LOGO_NO_TEXT = null;
 let TEXT_LOGO    = null;
-try { FULL_LOGO    = require('../../assets/full_logo.png');    } catch (_) {}
-try { LOGO_NO_TEXT = require('../../assets/logo_no_text.png'); } catch (_) {}
-try { TEXT_LOGO    = require('../../assets/text_logo.png');    } catch (_) {}
+try { FULL_LOGO    = require('../../images/fulllogo.png');    } catch (_) {}
+try { LOGO_NO_TEXT = require('../../images/logonotext.png'); } catch (_) {}
+try { TEXT_LOGO    = require('../../images/textlogo.png');    } catch (_) {}
 
 // ── LogoMark: circle with crossed hammer + wrench ─────────────────────────────
-export function LogoMark({ size = 80 }) {
+export function LogoMark({ size = SW * 0.5 }) {
   if (LOGO_NO_TEXT) {
     return (
       <Image
@@ -53,12 +55,10 @@ export function LogoMark({ size = 80 }) {
 // ── LogoText: "HANDYMAN" word-mark ────────────────────────────────────────────
 export function LogoText({ fontSize = 28, color = COLORS.primary }) {
   if (TEXT_LOGO) {
-    const ratio = 4.2; // approx aspect ratio
-    const h = fontSize * 1.3;
     return (
       <Image
         source={TEXT_LOGO}
-        style={{ height: h, width: h * ratio }}
+        style={{ width: SW * 0.55, height: 70 }}
         resizeMode="contain"
       />
     );
@@ -76,7 +76,7 @@ export function LogoFull({ size = 90 }) {
     return (
       <Image
         source={FULL_LOGO}
-        style={{ width: size * 1.6, height: size }}
+        style={{ width: SW * 0.82, height: SW * 0.82 }}
         resizeMode="contain"
       />
     );

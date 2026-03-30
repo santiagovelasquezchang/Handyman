@@ -36,7 +36,6 @@ export const CATEGORIES = [
         title: 'What size is the TV?',
         key: 'screen_size',
         type: 'button_select',
-<<<<<<< HEAD
         options: ['Under 40"', '40" to 60"', 'Over 60"'],
       },
       {
@@ -49,7 +48,6 @@ export const CATEGORIES = [
       {
         step: 3,
         title: 'Do you already have the mount?',
-=======
         options: ['Under 40"', '40" – 60"', 'Over 60"'],
       },
       {
@@ -62,7 +60,6 @@ export const CATEGORIES = [
       {
         step: 4,
         title: 'Do you have a wall mount?',
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
         key: 'has_mount',
         type: 'button_select',
         options: ['Yes', 'No, Tasker needs to buy it'],
@@ -150,7 +147,6 @@ export const CATEGORIES = [
     baseRate: 30,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'What is the size of the damage?',
         key: 'damage_size',
@@ -170,7 +166,6 @@ export const CATEGORIES = [
         key: 'needs_paint',
         type: 'button_select',
         options: ['Yes', 'No'],
-=======
         step: 2,
         title: 'How big is the hole / damage?',
         key: 'hole_size',
@@ -183,7 +178,6 @@ export const CATEGORIES = [
         key: 'location',
         type: 'button_select',
         options: ['Wall', 'Ceiling'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -254,7 +248,6 @@ export const CATEGORIES = [
     baseRate: 22,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'What type of items?',
         key: 'item_type',
@@ -267,7 +260,6 @@ export const CATEGORIES = [
         key: 'stairs',
         type: 'button_select',
         options: ['Yes', 'No, ground floor only'],
-=======
         step: 2,
         title: 'What type of item?',
         key: 'item_type',
@@ -280,7 +272,6 @@ export const CATEGORIES = [
         key: 'has_stairs',
         type: 'button_select',
         options: ['Yes', 'No'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -294,7 +285,6 @@ export const CATEGORIES = [
     baseRate: 30,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'What needs repair?',
         key: 'repair_type',
@@ -307,7 +297,6 @@ export const CATEGORIES = [
         key: 'issue',
         type: 'button_select',
         options: ['Hinges/Won\'t close', 'Broken/Chipped', 'Lock/Handle issue'],
-=======
         step: 2,
         title: 'What type of issue?',
         key: 'repair_type',
@@ -320,7 +309,6 @@ export const CATEGORIES = [
         key: 'description',
         type: 'text_input',
         placeholder: 'e.g. Cabinet door falls off, drawer stuck...',
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -334,7 +322,6 @@ export const CATEGORIES = [
     baseRate: 45,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'What do you need done?',
         key: 'electrical_type',
@@ -347,7 +334,6 @@ export const CATEGORIES = [
         key: 'height',
         type: 'button_select',
         options: ['Standard height', 'High ceiling (needs ladder)'],
-=======
         step: 2,
         title: 'What type of service?',
         key: 'service_type',
@@ -360,7 +346,6 @@ export const CATEGORIES = [
         key: 'is_emergency',
         type: 'button_select',
         options: ['Yes', 'No'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -374,7 +359,6 @@ export const CATEGORIES = [
     baseRate: 40,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'What is the issue?',
         key: 'plumbing_type',
@@ -387,7 +371,6 @@ export const CATEGORIES = [
         key: 'location_type',
         type: 'button_select',
         options: ['Bathroom', 'Kitchen', 'Outdoors/Patio'],
-=======
         step: 2,
         title: 'What type of service?',
         key: 'service_type',
@@ -400,7 +383,6 @@ export const CATEGORIES = [
         key: 'is_emergency',
         type: 'button_select',
         options: ['Yes', 'No'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -414,7 +396,6 @@ export const CATEGORIES = [
     baseRate: 28,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'What do you need?',
         key: 'repair_type',
@@ -427,7 +408,6 @@ export const CATEGORIES = [
         key: 'item_count',
         type: 'button_select',
         options: ['1 to 2', '3 to 5', 'More than 5'],
-=======
         step: 2,
         title: 'What type?',
         key: 'item_type',
@@ -440,7 +420,6 @@ export const CATEGORIES = [
         key: 'quantity',
         type: 'button_select',
         options: ['1', '2 – 3', '4 – 6', '7+'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -454,7 +433,6 @@ export const CATEGORIES = [
     baseRate: 32,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'Type of work?',
         key: 'carpentry_type',
@@ -467,7 +445,6 @@ export const CATEGORIES = [
         key: 'has_materials',
         type: 'button_select',
         options: ['Yes', 'No'],
-=======
         step: 2,
         title: 'What type of issue?',
         key: 'carpentry_type',
@@ -480,7 +457,6 @@ export const CATEGORIES = [
         key: 'description',
         type: 'text_input',
         placeholder: 'e.g. Build a bookshelf 2m wide, fix wardrobe door...',
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -494,7 +470,6 @@ export const CATEGORIES = [
     baseRate: 35,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'What type of floor?',
         key: 'floor_type',
@@ -507,7 +482,6 @@ export const CATEGORIES = [
         key: 'work_type',
         type: 'button_select',
         options: ['New installation', 'Repair broken pieces', 'Grout cleaning'],
-=======
         step: 2,
         title: 'What type of flooring?',
         key: 'floor_type',
@@ -520,7 +494,6 @@ export const CATEGORIES = [
         key: 'scope',
         type: 'button_select',
         options: ['Repair', 'Install'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -534,7 +507,6 @@ export const CATEGORIES = [
     baseRate: 20,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'What do you need?',
         key: 'yard_type',
@@ -554,7 +526,6 @@ export const CATEGORIES = [
         key: 'yard_size',
         type: 'button_select',
         options: ['Small', 'Medium', 'Very large'],
-=======
         step: 2,
         title: 'How big is your yard?',
         key: 'yard_size',
@@ -567,7 +538,6 @@ export const CATEGORIES = [
         key: 'service',
         type: 'button_select',
         options: ['Mowing', 'Weeding', 'Cleanup'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -614,7 +584,6 @@ export const CATEGORIES = [
       },
       {
         step: 2,
-<<<<<<< HEAD
         title: 'What is the service?',
         key: 'ac_service',
         type: 'button_select',
@@ -626,7 +595,6 @@ export const CATEGORIES = [
         key: 'btu',
         type: 'button_select',
         options: ['12,000 BTU', '18,000 BTU', '24,000+ BTU'],
-=======
         title: 'What type of service?',
         key: 'service_type',
         type: 'card_select',
@@ -638,7 +606,6 @@ export const CATEGORIES = [
         key: 'is_emergency',
         type: 'button_select',
         options: ['Yes', 'No'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -677,7 +644,6 @@ export const CATEGORIES = [
     baseRate: 55,
     scoping_details: [
       {
-<<<<<<< HEAD
         step: 1,
         title: 'Type of work?',
         key: 'weld_type',
@@ -690,7 +656,6 @@ export const CATEGORIES = [
         key: 'onsite',
         type: 'button_select',
         options: ['Yes', 'No'],
-=======
         step: 2,
         title: 'What material?',
         key: 'material',
@@ -703,7 +668,6 @@ export const CATEGORIES = [
         key: 'job_location',
         type: 'button_select',
         options: ['Indoors', 'Outdoors'],
->>>>>>> 697e9cbeba61389f5727f1e24af5c3485aced70c
       },
     ],
   },
@@ -712,41 +676,25 @@ export const CATEGORIES = [
 // ── CATEGORY HELPERS ──────────────────────────────────────────────────────────
 export const getCategoryById = (id) => CATEGORIES.find((c) => c.id === id) || null;
 
-// ── HOME SCREEN CAROUSEL SECTIONS ────────────────────────────────────────────
-// Each section renders as a horizontal FlatList carousel.
-// The final "All Categories" grid is rendered separately in HomeScreen.
+// ── HOME SCREEN SECTIONS ──────────────────────────────────────────────────────
 export const HOME_SECTIONS = [
   {
     id: 's1',
-    title: 'Spring Favorites',
-    titleEs: 'Favoritos de temporada',
-    subtitle: 'Top picks right now',
-    categoryIds: ['c2', 'c1', 'c14', 'c3', 'c16'],
-    // Cleaning, TV Mounting, Yard Work, Interior Painting, AC Repair
+    title: 'Most Popular',
+    subtitle: 'Top picks in your area',
+    categoryIds: ['c2', 'c1', 'c17', 'c16', 'c10'],
   },
   {
     id: 's2',
-    title: 'Your Moving Checklist',
-    titleEs: 'Tu lista de mudanza',
+    title: 'Moving Checklist',
     subtitle: 'Everything to settle in fast',
-    categoryIds: ['c5', 'c6', 'c7', 'c1', 'c12'],
-    // Flat Rate Moving, Help Moving, Lifting Heavy Items, TV Mounting, Light Carpentry
+    categoryIds: ['c5', 'c6', 'c7', 'c12', 'c1'],
   },
   {
     id: 's3',
-    title: 'Home Improvement Help',
-    titleEs: 'Mejoras del hogar',
-    subtitle: 'Fix and upgrade your space',
-    categoryIds: ['c3', 'c4', 'c9', 'c10', 'c13', 'c15'],
-    // Interior Painting, Drywall Repair, Electrical, Plumbing, Floor/Tile, Exterior Painting
-  },
-  {
-    id: 's4',
-    title: 'Quick Fixes',
-    titleEs: 'Reparaciones rápidas',
-    subtitle: 'Small jobs, fast turnaround',
-    categoryIds: ['c8', 'c11', 'c17', 'c18', 'c10'],
-    // Door/Cabinet, Window/Blind, Locksmith, Welder, Plumbing
+    title: 'Home Improvement',
+    subtitle: 'Upgrade your space',
+    categoryIds: ['c16', 'c3', 'c4', 'c13', 'c15'],
   },
 ];
 
@@ -1160,4 +1108,404 @@ export const HELP_CATEGORIES = [
   { id: 'h4', icon: 'people-outline',     label: 'Taskers'              },
   { id: 'h5', icon: 'shield-outline',     label: 'Safety & Trust'       },
   { id: 'h6', icon: 'chatbubble-outline', label: 'Reviews & Ratings'    },
+];
+
+// ── TASKER PROFILE ────────────────────────────────────────────────────────────
+export const TASKER_PROFILE = {
+  id: 't1',
+  name: 'Carlos Rodríguez',
+  avatar: avatar(3),
+  rating: 4.9,
+  reviewCount: 128,
+  totalTasks: 312,
+  hourlyRate: 45,
+  bio: 'Professional handyman with 8+ years of experience. Specializing in electrical, plumbing, and general home repairs across Caracas.',
+  skills: ['Electrical', 'Plumbing', 'TV Mounting', 'Furniture Assembly', 'Painting'],
+  weeklyEarnings: 450,
+  monthlyEarnings: 1820,
+  pendingPayout: 215,
+};
+
+// ── TASKER NEW REQUESTS ───────────────────────────────────────────────────────
+export const TASKER_REQUESTS = [
+  {
+    id: 'req1',
+    clientName: 'María González',
+    clientAvatar: avatar(5),
+    categoryName: 'Electrical',
+    date: 'Mon Apr 7',
+    time: '10:00 AM',
+    address: 'Av. Libertador, Caracas',
+    estimatedHours: 2,
+    estimatedTotal: 90,
+    scope: 'Install ceiling fan + fix outlet',
+  },
+  {
+    id: 'req2',
+    clientName: 'Andrés Martínez',
+    clientAvatar: avatar(8),
+    categoryName: 'TV Mounting',
+    date: 'Tue Apr 8',
+    time: '2:00 PM',
+    address: 'Los Palos Grandes, Caracas',
+    estimatedHours: 1,
+    estimatedTotal: 45,
+    scope: 'Mount 55" TV on concrete wall',
+  },
+  {
+    id: 'req3',
+    clientName: 'Luisa Fernández',
+    clientAvatar: avatar(11),
+    categoryName: 'House Cleaning',
+    date: 'Wed Apr 9',
+    time: '9:00 AM',
+    address: 'Las Mercedes, Caracas',
+    estimatedHours: 4,
+    estimatedTotal: 160,
+    scope: '3 bedrooms, deep clean',
+  },
+];
+
+// ── TASKER TODAY'S TASKS ──────────────────────────────────────────────────────
+export const TASKER_TODAY_TASKS = [
+  {
+    id: 'tt1',
+    clientName: 'Pablo Herrera',
+    clientAvatar: avatar(14),
+    categoryName: 'Plumbing',
+    time: '11:00 AM',
+    address: 'Chacao, Caracas',
+    totalRate: 120,
+    status: 'in_progress',
+    scope: 'Fix kitchen sink leak + replace bathroom faucet',
+    mapImage: pic('caracasmap', 600, 280),
+    answers: { issue_type: 'Leak', urgency: 'Normal' },
+  },
+  {
+    id: 'tt2',
+    clientName: 'Valentina Torres',
+    clientAvatar: avatar(17),
+    categoryName: 'Furniture Assembly',
+    time: '3:00 PM',
+    address: 'Altamira, Caracas',
+    totalRate: 75,
+    status: 'upcoming',
+    scope: 'Assemble 2 wardrobes + 1 bookshelf',
+    mapImage: pic('altamiramap', 600, 280),
+    answers: { item_count: '3 pieces', complexity: 'Medium' },
+  },
+];
+
+// ── TASKER MY TASKS ───────────────────────────────────────────────────────────
+export const TASKER_TASKS = {
+  upcoming: [
+    {
+      id: 'tt1',
+      clientName: 'Pablo Herrera',
+      clientAvatar: avatar(14),
+      categoryName: 'Plumbing',
+      time: '11:00 AM',
+      address: 'Chacao, Caracas',
+      totalRate: 120,
+      status: 'in_progress',
+      scope: 'Fix kitchen sink leak + replace bathroom faucet',
+      mapImage: pic('caracasmap', 600, 280),
+      answers: { issue_type: 'Leak', urgency: 'Normal' },
+    },
+    {
+      id: 'tt2',
+      clientName: 'Valentina Torres',
+      clientAvatar: avatar(17),
+      categoryName: 'Furniture Assembly',
+      time: '3:00 PM',
+      address: 'Altamira, Caracas',
+      totalRate: 75,
+      status: 'upcoming',
+      scope: 'Assemble 2 wardrobes + 1 bookshelf',
+      mapImage: pic('altamiramap', 600, 280),
+      answers: { item_count: '3 pieces', complexity: 'Medium' },
+    },
+    {
+      id: 'tt3',
+      clientName: 'Roberto Díaz',
+      clientAvatar: avatar(20),
+      categoryName: 'Painting',
+      date: 'Fri Apr 11',
+      time: '8:00 AM',
+      address: 'El Rosal, Caracas',
+      totalRate: 200,
+      status: 'upcoming',
+      scope: 'Paint living room + dining area',
+      mapImage: pic('elsalmap', 600, 280),
+      answers: { surface: 'Interior', rooms: '2' },
+    },
+  ],
+  completed: [
+    {
+      id: 'tc1',
+      clientName: 'Isabel Morales',
+      clientAvatar: avatar(23),
+      categoryName: 'Electrical',
+      date: 'Mon Mar 25',
+      time: '10:00 AM',
+      address: 'La Castellana, Caracas',
+      totalRate: 90,
+      status: 'completed',
+      rating: 5,
+    },
+    {
+      id: 'tc2',
+      clientName: 'Diego Ramírez',
+      clientAvatar: avatar(26),
+      categoryName: 'TV Mounting',
+      date: 'Thu Mar 20',
+      time: '2:00 PM',
+      address: 'Chuao, Caracas',
+      totalRate: 45,
+      status: 'completed',
+      rating: 5,
+    },
+  ],
+};
+
+// ── CHAT CONVERSATIONS (inbox) ────────────────────────────────────────────────
+export const CHAT_CONVERSATIONS = [
+  {
+    id: 'conv1',
+    participantName: 'Carlos Rodríguez',
+    participantAvatar: avatar(3),
+    taskCategory: 'Electrical',
+    lastMessage: "I'll be there by 10:00 AM, please have the panel accessible.",
+    lastMessageTime: '9:42 AM',
+    unread: 2,
+  },
+  {
+    id: 'conv2',
+    participantName: 'Ana Sofía Pérez',
+    participantAvatar: avatar(6),
+    taskCategory: 'House Cleaning',
+    lastMessage: 'Perfect! See you tomorrow morning.',
+    lastMessageTime: 'Yesterday',
+    unread: 0,
+  },
+  {
+    id: 'conv3',
+    participantName: 'Miguel Ángel Castro',
+    participantAvatar: avatar(9),
+    taskCategory: 'Plumbing',
+    lastMessage: 'The job is done. Please check and confirm.',
+    lastMessageTime: 'Mar 25',
+    unread: 0,
+  },
+];
+
+// ── CHAT MESSAGES (keyed by conversationId) ───────────────────────────────────
+export const CHAT_MESSAGES = {
+  conv1: [
+    { id: 'm1', text: 'Hi! I booked you for electrical work tomorrow.', sender: 'client', time: '9:30 AM' },
+    { id: 'm2', text: "Hello! Yes, I confirmed the booking. I'll be doing the ceiling fan installation and fixing the outlet.", sender: 'tasker', time: '9:33 AM' },
+    { id: 'm3', text: 'Great, do you need anything specific from me?', sender: 'client', time: '9:35 AM' },
+    { id: 'm4', text: "Just make sure the circuit breaker is accessible. I'll bring all the tools.", sender: 'tasker', time: '9:38 AM' },
+    { id: 'm5', text: "Perfect, it's in the kitchen hallway. No problem at all.", sender: 'client', time: '9:40 AM' },
+    { id: 'm6', text: "I'll be there by 10:00 AM, please have the panel accessible.", sender: 'tasker', time: '9:42 AM' },
+  ],
+  conv2: [
+    { id: 'm1', text: "Hi Ana, I'm all set for tomorrow's cleaning.", sender: 'client', time: 'Yesterday 8:00 AM' },
+    { id: 'm2', text: "Wonderful! I'll arrive at 9 AM sharp. How many rooms?", sender: 'tasker', time: 'Yesterday 8:05 AM' },
+    { id: 'm3', text: '3 bedrooms and 2 bathrooms. Deep clean please.', sender: 'client', time: 'Yesterday 8:10 AM' },
+    { id: 'm4', text: 'Perfect! See you tomorrow morning.', sender: 'tasker', time: 'Yesterday 8:12 AM' },
+  ],
+  conv3: [
+    { id: 'm1', text: 'Miguel, the sink is still dripping a bit.', sender: 'client', time: 'Mar 25 2:00 PM' },
+    { id: 'm2', text: 'I tightened the valve. Let it run for 10 minutes and check again.', sender: 'tasker', time: 'Mar 25 2:15 PM' },
+    { id: 'm3', text: 'Ok it stopped! Great work.', sender: 'client', time: 'Mar 25 2:30 PM' },
+    { id: 'm4', text: 'The job is done. Please check and confirm.', sender: 'tasker', time: 'Mar 25 2:32 PM' },
+  ],
+};
+
+// ── TASKER SCHEDULE ───────────────────────────────────────────────────────────
+export const TASKER_SCHEDULE = {
+  bookedDays: [
+    '2026-03-30','2026-04-01','2026-04-03','2026-04-05',
+    '2026-04-07','2026-04-08','2026-04-11','2026-04-14',
+  ],
+  workingHours: {
+    default:      { start: '8:00 AM',  end: '6:00 PM' },
+    '2026-04-07': { start: '10:00 AM', end: '4:00 PM' },
+    '2026-04-08': { start: '9:00 AM',  end: '5:00 PM' },
+  },
+  timeOffDays: ['2026-04-06','2026-04-13'],
+};
+
+// ── HOME SCREEN DATA ──────────────────────────────────────────────────────────
+// Feeds ClientHomeScreen modules: quick-book carousel, rebook, spaces summary.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Five services shown in the horizontal "Quick Book" strip on Home.
+export const HOME_QUICK_SERVICES = [
+  {
+    id: 'c2',
+    name: 'Cleaning',
+    icon: 'sparkles-outline',
+    image: pic('cleaning', 300, 300),
+    baseRate: 22,
+    groupColor: '#2E8B57',
+  },
+  {
+    id: 'c16',
+    name: 'AC Repair',
+    icon: 'snow-outline',
+    image: pic('acrepair', 300, 300),
+    baseRate: 40,
+    groupColor: '#4A9CF7',
+  },
+  {
+    id: 'c18',
+    name: 'Electrical',
+    icon: 'flash-outline',
+    image: pic('electrical', 300, 300),
+    baseRate: 35,
+    groupColor: '#F7B84A',
+  },
+  {
+    id: 'c5',
+    name: 'Plumbing',
+    icon: 'water-outline',
+    image: pic('plumbing', 300, 300),
+    baseRate: 30,
+    groupColor: '#4A6CF7',
+  },
+  {
+    id: 'c1',
+    name: 'TV Mounting',
+    icon: 'tv-outline',
+    image: pic('tvmount', 300, 300),
+    baseRate: 35,
+    groupColor: '#1A374D',
+  },
+  {
+    id: 'c3',
+    name: 'Painting',
+    icon: 'color-palette-outline',
+    image: pic('painting', 300, 300),
+    baseRate: 25,
+    groupColor: '#E86C3A',
+  },
+];
+
+// Providers the user has worked with before — shown in "Your Team" rebook strip.
+export const HOME_TRUSTED_PROVIDERS = [
+  {
+    id: 't2',
+    name: 'María Salcedo',
+    specialty: 'Cleaning',
+    avatar: avatar(20),
+    rating: 5.0,
+    lastServiceDate: 'Mar 28',
+    categoryId: 'c2',
+  },
+  {
+    id: 't1',
+    name: 'José Rodríguez',
+    specialty: 'TV Mounting',
+    avatar: avatar(11),
+    rating: 4.9,
+    lastServiceDate: 'Mar 10',
+    categoryId: 'c1',
+  },
+  {
+    id: 't5',
+    name: 'Luis Chirinos',
+    specialty: 'AC Repair',
+    avatar: avatar(57),
+    rating: 4.8,
+    lastServiceDate: 'Feb 18',
+    categoryId: 'c16',
+  },
+];
+
+// User's primary space — shown as a summary card on Home.
+export const HOME_PRIMARY_SPACE = {
+  id: 's1',
+  name: 'Downtown Apartment',
+  address: 'Av. Francisco de Miranda, Altamira',
+  type: 'apartment',
+  activeRecurring: 1,
+  upcomingCount: 1,
+  upcomingService: 'Cleaning · Apr 5',
+  healthLabel: '1 upcoming service',
+  healthColor: '#FF7F3F',   // orange = something scheduled
+};
+
+// Upcoming booking snapshot shown on Home header area.
+export const HOME_UPCOMING_BOOKING = {
+  id: 'th1',
+  service: 'Cleaning',
+  provider: 'María Salcedo',
+  providerAvatar: avatar(20),
+  date: 'Sat, Apr 5',
+  time: '10:00 AM',
+  spaceLabel: 'Downtown Apartment',
+};
+
+// ── SERVICES CATALOG (grouped for ServicesHomeScreen) ────────────────────────
+// Each group drives one vertical section in the catalog.
+// Items are lightweight — they link back to CATEGORIES by id for full details.
+// ─────────────────────────────────────────────────────────────────────────────
+export const SERVICE_CATALOG_GROUPS = [
+  {
+    key: 'technical',
+    title: 'Technical & Repairs',
+    icon: 'flash-outline',
+    color: '#4A6CF7',
+    services: [
+      { id: 'c16', name: 'AC Repair & Service',       icon: 'snow-outline',       baseRate: 40, groupColor: '#4A9CF7' },
+      { id: 'c18', name: 'Electrical Work',            icon: 'flash-outline',       baseRate: 35, groupColor: '#F7B84A' },
+      { id: 'c5',  name: 'Plumbing',                   icon: 'water-outline',       baseRate: 30, groupColor: '#4A6CF7' },
+      { id: 'c17', name: 'Appliance Repair',           icon: 'hardware-chip-outline',baseRate: 38, groupColor: '#9B59B6' },
+      { id: 'c19', name: 'Smart Home Setup',           icon: 'wifi-outline',        baseRate: 45, groupColor: '#2ECC71' },
+      { id: 'c20', name: 'Security & Locks',           icon: 'lock-closed-outline', baseRate: 35, groupColor: '#E74C3C' },
+    ],
+  },
+  {
+    key: 'cleaning',
+    title: 'Cleaning & Upkeep',
+    icon: 'sparkles-outline',
+    color: '#2E8B57',
+    services: [
+      { id: 'c2',  name: 'Standard Cleaning',          icon: 'sparkles-outline',    baseRate: 22, groupColor: '#2E8B57' },
+      { id: 'c21', name: 'Deep Cleaning',              icon: 'search-outline',      baseRate: 30, groupColor: '#27AE60' },
+      { id: 'c22', name: 'Post-Construction Clean',    icon: 'construct-outline',   baseRate: 35, groupColor: '#16A085' },
+      { id: 'c23', name: 'Move-in / Move-out Clean',   icon: 'home-outline',        baseRate: 32, groupColor: '#1ABC9C' },
+      { id: 'c24', name: 'Yard Work & Gardening',      icon: 'leaf-outline',        baseRate: 28, groupColor: '#27AE60' },
+      { id: 'c25', name: 'Pressure Washing',           icon: 'water-outline',       baseRate: 30, groupColor: '#2980B9' },
+    ],
+  },
+  {
+    key: 'improvements',
+    title: 'Home Improvements',
+    icon: 'hammer-outline',
+    color: '#1A374D',
+    services: [
+      { id: 'c3',  name: 'Interior Painting',          icon: 'color-palette-outline',baseRate: 25, groupColor: '#E86C3A' },
+      { id: 'c26', name: 'Exterior Painting',          icon: 'brush-outline',       baseRate: 28, groupColor: '#D35400' },
+      { id: 'c27', name: 'Flooring & Tile',            icon: 'grid-outline',        baseRate: 32, groupColor: '#8E44AD' },
+      { id: 'c28', name: 'Drywall & Plastering',       icon: 'albums-outline',      baseRate: 28, groupColor: '#7F8C8D' },
+      { id: 'c29', name: 'Carpentry & Shelving',       icon: 'cube-outline',        baseRate: 30, groupColor: '#795548' },
+      { id: 'c30', name: 'Door & Window Repair',       icon: 'keypad-outline',      baseRate: 28, groupColor: '#1A374D' },
+    ],
+  },
+  {
+    key: 'moving',
+    title: 'Moving & Heavy Lifting',
+    icon: 'cube-outline',
+    color: '#FF7F3F',
+    services: [
+      { id: 'c1',  name: 'TV Mounting',                icon: 'tv-outline',          baseRate: 35, groupColor: '#1A374D' },
+      { id: 'c6',  name: 'Furniture Assembly',         icon: 'cube-outline',        baseRate: 28, groupColor: '#FF7F3F' },
+      { id: 'c31', name: 'Moving Help',                icon: 'car-outline',         baseRate: 30, groupColor: '#E67E22' },
+      { id: 'c32', name: 'Heavy Item Moving',          icon: 'barbell-outline',     baseRate: 35, groupColor: '#D35400' },
+      { id: 'c33', name: 'Box Packing & Unpacking',    icon: 'archive-outline',     baseRate: 22, groupColor: '#FF7F3F' },
+    ],
+  },
 ];
