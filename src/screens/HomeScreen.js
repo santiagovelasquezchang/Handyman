@@ -29,7 +29,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { HOME_SECTIONS, CATEGORIES, getSectionCategories } from '../../mockData';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../theme';
-import { LogoText } from '../components/Logo';
 import i18n from '../i18n';
 import { useAuth } from '../context/AuthContext';
 
@@ -37,6 +36,9 @@ const CARD_SIZE  = 140;
 const { width: SCREEN_W } = Dimensions.get('window');
 
 // ── Rotating-border search pill ───────────────────────────────────────────────
+const PILL_H   = 48;
+const BORDER_W = 2;
+
 function AnimatedSearchBar({ onPress }) {
   const rotation = useRef(new Animated.Value(0)).current;
 
@@ -44,7 +46,7 @@ function AnimatedSearchBar({ onPress }) {
     Animated.loop(
       Animated.timing(rotation, {
         toValue: 1,
-        duration: 3000,
+        duration: 2000,
         useNativeDriver: true,
       })
     ).start();
@@ -55,36 +57,40 @@ function AnimatedSearchBar({ onPress }) {
     outputRange: ['0deg', '360deg'],
   });
 
-  // The rotating element needs to be larger than the pill so the spinning
-  // colour is visible as a 2px border peeking out from under the white pill.
-  const PILL_H    = 48;
-  const BORDER_W  = 2;
-  const SPIN_SIZE = SCREEN_W; // large square; clipped by overflow:hidden
+  // SPIN_SIZE must be large enough that when rotated, its orange half always
+  // covers the entire pill border.  Using screen width as a safe large value.
+  const SPIN_SIZE = SCREEN_W * 1.5;
 
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.9}
-      style={styles.searchOuter}
+      style={styles.searchOuter}         // overflow:hidden + borderRadius:24
     >
-      {/* Rotating orange layer */}
+      {/* ── Rotating conic sweep ── */}
+      {/* A large square split 50/50 orange|transparent, centred and spun */}
       <Animated.View
-        style={[
-          styles.searchSpin,
-          { width: SPIN_SIZE, height: SPIN_SIZE, transform: [{ rotate }] },
-        ]}
+        pointerEvents="none"
+        style={{
+          position: 'absolute',
+          width: SPIN_SIZE,
+          height: SPIN_SIZE,
+          transform: [{ rotate }],
+        }}
       >
-        {/* Conic-like: two semicircles + gradient to approximate rotation */}
-        <View style={[styles.searchSpinColor, { backgroundColor: COLORS.accent }]} />
+        {/* Left half — orange */}
+        <View style={{
+          position: 'absolute',
+          left: 0, top: 0,
+          width: SPIN_SIZE / 2,
+          height: SPIN_SIZE,
+          backgroundColor: COLORS.accent,
+        }} />
+        {/* Right half — transparent (shows navy bg behind) */}
       </Animated.View>
 
-      {/* White inner pill covering the rotating layer except the 2px border */}
-      <View
-        style={[
-          styles.searchPill,
-          { margin: BORDER_W, height: PILL_H - BORDER_W * 2 },
-        ]}
-      >
+      {/* ── White inner pill — covers all but the 2px border ── */}
+      <View style={styles.searchPill}>
         <Ionicons name="search" size={16} color={COLORS.textSecondary} style={{ marginRight: 8 }} />
         <Text style={styles.searchPlaceholder} numberOfLines={1}>
           {i18n.t('home.searchPlaceholder')}
@@ -195,7 +201,7 @@ export default function HomeScreen({ navigation }) {
       >
         {/* ── Item 0: Navy header (scrolls away) ── */}
         <View style={styles.navyHeader}>
-          <LogoText fontSize={22} color={COLORS.white} />
+          <Text style={styles.brandName}>HANDYMAN</Text>
           <Text style={styles.greeting} numberOfLines={1}>
             {i18n.t('home.greeting', { name: firstName })}
           </Text>
@@ -239,6 +245,12 @@ const styles = StyleSheet.create({
     gap: 6,
     alignItems: 'center',
   },
+  brandName: {
+    fontFamily: FONTS.familyBold,
+    fontSize: 28,
+    color: COLORS.white,
+    letterSpacing: 1,
+  },
   greeting: {
     fontFamily: FONTS.familyMedium,
     fontSize: 14,
@@ -256,27 +268,20 @@ const styles = StyleSheet.create({
 
   // Rotating-border search
   searchOuter: {
-    height: 48,
-    borderRadius: 24,
+    height: PILL_H,
+    borderRadius: PILL_H / 2,
     overflow: 'hidden',
-    backgroundColor: COLORS.accent,   // fallback / base colour
+    backgroundColor: COLORS.primary,  // shown behind as the "dark" half
     justifyContent: 'center',
     alignItems: 'center',
   },
-  searchSpin: {
-    position: 'absolute',
-    borderRadius: 9999,
-    overflow: 'hidden',
-  },
-  searchSpinColor: {
-    flex: 1,
-    borderRadius: 9999,
-  },
   searchPill: {
     position: 'absolute',
-    left: 2,
-    right: 2,
-    borderRadius: 22,
+    top: BORDER_W,
+    bottom: BORDER_W,
+    left: BORDER_W,
+    right: BORDER_W,
+    borderRadius: (PILL_H / 2) - BORDER_W,
     backgroundColor: COLORS.white,
     flexDirection: 'row',
     alignItems: 'center',

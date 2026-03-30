@@ -966,3 +966,230 @@ export const HELP_CATEGORIES = [
   { id: 'h5', icon: 'shield-outline',     label: 'Safety & Trust'       },
   { id: 'h6', icon: 'chatbubble-outline', label: 'Reviews & Ratings'    },
 ];
+
+// ── TASKER PROFILE ────────────────────────────────────────────────────────────
+export const TASKER_PROFILE = {
+  id: 't1',
+  name: 'Carlos Rodríguez',
+  avatar: avatar(3),
+  rating: 4.9,
+  reviewCount: 128,
+  totalTasks: 312,
+  hourlyRate: 45,
+  bio: 'Professional handyman with 8+ years of experience. Specializing in electrical, plumbing, and general home repairs across Caracas.',
+  skills: ['Electrical', 'Plumbing', 'TV Mounting', 'Furniture Assembly', 'Painting'],
+  weeklyEarnings: 450,
+  monthlyEarnings: 1820,
+  pendingPayout: 215,
+};
+
+// ── TASKER NEW REQUESTS ───────────────────────────────────────────────────────
+export const TASKER_REQUESTS = [
+  {
+    id: 'req1',
+    clientName: 'María González',
+    clientAvatar: avatar(5),
+    categoryName: 'Electrical',
+    date: 'Mon Apr 7',
+    time: '10:00 AM',
+    address: 'Av. Libertador, Caracas',
+    estimatedHours: 2,
+    estimatedTotal: 90,
+    scope: 'Install ceiling fan + fix outlet',
+  },
+  {
+    id: 'req2',
+    clientName: 'Andrés Martínez',
+    clientAvatar: avatar(8),
+    categoryName: 'TV Mounting',
+    date: 'Tue Apr 8',
+    time: '2:00 PM',
+    address: 'Los Palos Grandes, Caracas',
+    estimatedHours: 1,
+    estimatedTotal: 45,
+    scope: 'Mount 55" TV on concrete wall',
+  },
+  {
+    id: 'req3',
+    clientName: 'Luisa Fernández',
+    clientAvatar: avatar(11),
+    categoryName: 'House Cleaning',
+    date: 'Wed Apr 9',
+    time: '9:00 AM',
+    address: 'Las Mercedes, Caracas',
+    estimatedHours: 4,
+    estimatedTotal: 160,
+    scope: '3 bedrooms, deep clean',
+  },
+];
+
+// ── TASKER TODAY'S TASKS ──────────────────────────────────────────────────────
+export const TASKER_TODAY_TASKS = [
+  {
+    id: 'tt1',
+    clientName: 'Pablo Herrera',
+    clientAvatar: avatar(14),
+    categoryName: 'Plumbing',
+    time: '11:00 AM',
+    address: 'Chacao, Caracas',
+    totalRate: 120,
+    status: 'in_progress',
+    scope: 'Fix kitchen sink leak + replace bathroom faucet',
+    mapImage: pic('caracasmap', 600, 280),
+    answers: { issue_type: 'Leak', urgency: 'Normal' },
+  },
+  {
+    id: 'tt2',
+    clientName: 'Valentina Torres',
+    clientAvatar: avatar(17),
+    categoryName: 'Furniture Assembly',
+    time: '3:00 PM',
+    address: 'Altamira, Caracas',
+    totalRate: 75,
+    status: 'upcoming',
+    scope: 'Assemble 2 wardrobes + 1 bookshelf',
+    mapImage: pic('altamiramap', 600, 280),
+    answers: { item_count: '3 pieces', complexity: 'Medium' },
+  },
+];
+
+// ── TASKER MY TASKS ───────────────────────────────────────────────────────────
+export const TASKER_TASKS = {
+  upcoming: [
+    {
+      id: 'tt1',
+      clientName: 'Pablo Herrera',
+      clientAvatar: avatar(14),
+      categoryName: 'Plumbing',
+      time: '11:00 AM',
+      address: 'Chacao, Caracas',
+      totalRate: 120,
+      status: 'in_progress',
+      scope: 'Fix kitchen sink leak + replace bathroom faucet',
+      mapImage: pic('caracasmap', 600, 280),
+      answers: { issue_type: 'Leak', urgency: 'Normal' },
+    },
+    {
+      id: 'tt2',
+      clientName: 'Valentina Torres',
+      clientAvatar: avatar(17),
+      categoryName: 'Furniture Assembly',
+      time: '3:00 PM',
+      address: 'Altamira, Caracas',
+      totalRate: 75,
+      status: 'upcoming',
+      scope: 'Assemble 2 wardrobes + 1 bookshelf',
+      mapImage: pic('altamiramap', 600, 280),
+      answers: { item_count: '3 pieces', complexity: 'Medium' },
+    },
+    {
+      id: 'tt3',
+      clientName: 'Roberto Díaz',
+      clientAvatar: avatar(20),
+      categoryName: 'Painting',
+      date: 'Fri Apr 11',
+      time: '8:00 AM',
+      address: 'El Rosal, Caracas',
+      totalRate: 200,
+      status: 'upcoming',
+      scope: 'Paint living room + dining area',
+      mapImage: pic('elsalmap', 600, 280),
+      answers: { surface: 'Interior', rooms: '2' },
+    },
+  ],
+  completed: [
+    {
+      id: 'tc1',
+      clientName: 'Isabel Morales',
+      clientAvatar: avatar(23),
+      categoryName: 'Electrical',
+      date: 'Mon Mar 25',
+      time: '10:00 AM',
+      address: 'La Castellana, Caracas',
+      totalRate: 90,
+      status: 'completed',
+      rating: 5,
+    },
+    {
+      id: 'tc2',
+      clientName: 'Diego Ramírez',
+      clientAvatar: avatar(26),
+      categoryName: 'TV Mounting',
+      date: 'Thu Mar 20',
+      time: '2:00 PM',
+      address: 'Chuao, Caracas',
+      totalRate: 45,
+      status: 'completed',
+      rating: 5,
+    },
+  ],
+};
+
+// ── CHAT CONVERSATIONS (inbox) ────────────────────────────────────────────────
+export const CHAT_CONVERSATIONS = [
+  {
+    id: 'conv1',
+    participantName: 'Carlos Rodríguez',
+    participantAvatar: avatar(3),
+    taskCategory: 'Electrical',
+    lastMessage: "I'll be there by 10:00 AM, please have the panel accessible.",
+    lastMessageTime: '9:42 AM',
+    unread: 2,
+  },
+  {
+    id: 'conv2',
+    participantName: 'Ana Sofía Pérez',
+    participantAvatar: avatar(6),
+    taskCategory: 'House Cleaning',
+    lastMessage: 'Perfect! See you tomorrow morning.',
+    lastMessageTime: 'Yesterday',
+    unread: 0,
+  },
+  {
+    id: 'conv3',
+    participantName: 'Miguel Ángel Castro',
+    participantAvatar: avatar(9),
+    taskCategory: 'Plumbing',
+    lastMessage: 'The job is done. Please check and confirm.',
+    lastMessageTime: 'Mar 25',
+    unread: 0,
+  },
+];
+
+// ── CHAT MESSAGES (keyed by conversationId) ───────────────────────────────────
+export const CHAT_MESSAGES = {
+  conv1: [
+    { id: 'm1', text: 'Hi! I booked you for electrical work tomorrow.', sender: 'client', time: '9:30 AM' },
+    { id: 'm2', text: "Hello! Yes, I confirmed the booking. I'll be doing the ceiling fan installation and fixing the outlet.", sender: 'tasker', time: '9:33 AM' },
+    { id: 'm3', text: 'Great, do you need anything specific from me?', sender: 'client', time: '9:35 AM' },
+    { id: 'm4', text: "Just make sure the circuit breaker is accessible. I'll bring all the tools.", sender: 'tasker', time: '9:38 AM' },
+    { id: 'm5', text: "Perfect, it's in the kitchen hallway. No problem at all.", sender: 'client', time: '9:40 AM' },
+    { id: 'm6', text: "I'll be there by 10:00 AM, please have the panel accessible.", sender: 'tasker', time: '9:42 AM' },
+  ],
+  conv2: [
+    { id: 'm1', text: "Hi Ana, I'm all set for tomorrow's cleaning.", sender: 'client', time: 'Yesterday 8:00 AM' },
+    { id: 'm2', text: "Wonderful! I'll arrive at 9 AM sharp. How many rooms?", sender: 'tasker', time: 'Yesterday 8:05 AM' },
+    { id: 'm3', text: '3 bedrooms and 2 bathrooms. Deep clean please.', sender: 'client', time: 'Yesterday 8:10 AM' },
+    { id: 'm4', text: 'Perfect! See you tomorrow morning.', sender: 'tasker', time: 'Yesterday 8:12 AM' },
+  ],
+  conv3: [
+    { id: 'm1', text: 'Miguel, the sink is still dripping a bit.', sender: 'client', time: 'Mar 25 2:00 PM' },
+    { id: 'm2', text: 'I tightened the valve. Let it run for 10 minutes and check again.', sender: 'tasker', time: 'Mar 25 2:15 PM' },
+    { id: 'm3', text: 'Ok it stopped! Great work.', sender: 'client', time: 'Mar 25 2:30 PM' },
+    { id: 'm4', text: 'The job is done. Please check and confirm.', sender: 'tasker', time: 'Mar 25 2:32 PM' },
+  ],
+};
+
+// ── TASKER SCHEDULE ───────────────────────────────────────────────────────────
+export const TASKER_SCHEDULE = {
+  bookedDays: [
+    '2026-03-30','2026-04-01','2026-04-03','2026-04-05',
+    '2026-04-07','2026-04-08','2026-04-11','2026-04-14',
+  ],
+  workingHours: {
+    default:      { start: '8:00 AM',  end: '6:00 PM' },
+    '2026-04-07': { start: '10:00 AM', end: '4:00 PM' },
+    '2026-04-08': { start: '9:00 AM',  end: '5:00 PM' },
+  },
+  timeOffDays: ['2026-04-06','2026-04-13'],
+};

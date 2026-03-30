@@ -69,6 +69,8 @@ export default function SearchScreen({ navigation }) {
 
   const handleSelect = (category) => {
     Keyboard.dismiss();
+    // Dismiss the modal first, then navigate to the funnel in the parent stack
+    navigation.goBack();
     navigation.navigate('TaskLocation', { category });
   };
 

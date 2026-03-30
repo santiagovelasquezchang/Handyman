@@ -66,7 +66,7 @@ function EmptyState({ tab, onBrowse }) {
 }
 
 // ── Scheduled task card ───────────────────────────────────────────────────────
-function ScheduledCard({ task }) {
+function ScheduledCard({ task, onManage }) {
   return (
     <View style={styles.card}>
       {/* Header */}
@@ -99,7 +99,7 @@ function ScheduledCard({ task }) {
           ${task.totalRate.toFixed(2)}
           <Text style={styles.taskTotalSub}> total</Text>
         </Text>
-        <TouchableOpacity style={styles.manageBtn} activeOpacity={0.75}>
+        <TouchableOpacity style={styles.manageBtn} onPress={onManage} activeOpacity={0.75}>
           <Text style={styles.manageBtnText}>Manage task</Text>
           <Ionicons name="arrow-forward" size={13} color={COLORS.primary} />
         </TouchableOpacity>
@@ -210,7 +210,11 @@ export default function TasksScreen({ navigation }) {
         >
           {list.map((task) =>
             task.status === 'scheduled' ? (
-              <ScheduledCard key={task.id} task={task} />
+              <ScheduledCard
+                key={task.id}
+                task={task}
+                onManage={() => navigation.navigate('ManageTask', { task })}
+              />
             ) : (
               <CompletedCard
                 key={task.id}

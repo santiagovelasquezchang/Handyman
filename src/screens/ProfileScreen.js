@@ -3,6 +3,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
+import { useAppMode } from '../context/AppModeContext';
 import {
   View,
   Text,
@@ -32,7 +33,7 @@ const SECTIONS = [
     { id: 'HelpCenter',           icon: 'help-circle-outline',        label: 'Help Center' },
   ],
   [
-    { id: 'become',               icon: 'briefcase-outline',          label: 'Become a Tasker', accent: true },
+    { id: 'become',               icon: 'swap-horizontal-outline',    label: 'Switch to Tasker Mode', accent: true },
     { id: 'logout',               icon: 'log-out-outline',            label: 'Log Out',          danger: true },
   ],
 ];
@@ -135,6 +136,7 @@ function SettingsSection({ items, onPress }) {
 // ── Main screen ───────────────────────────────────────────────────────────────
 export default function ProfileScreen({ navigation }) {
   const insets = useSafeAreaInsets();
+  const { setIsTaskerMode } = useAppMode();
 
   const handleRowPress = (item) => {
     if (item.id === 'logout') {
@@ -154,7 +156,7 @@ export default function ProfileScreen({ navigation }) {
       return;
     }
     if (item.id === 'become') {
-      Alert.alert('Become a Tasker', 'Tasker registration coming soon!');
+      setIsTaskerMode(true);
       return;
     }
     // All other rows use their id as the route name

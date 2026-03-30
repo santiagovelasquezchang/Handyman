@@ -16,8 +16,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { TASK_HISTORY } from './mockData';
 
-// Auth context + new screens
+// Contexts
 import { AuthProvider, useAuth } from './src/context/AuthContext';
+import { AppModeProvider, useAppMode } from './src/context/AppModeContext';
 import SplashScreen  from './src/screens/SplashScreen';
 import WelcomeScreen from './src/screens/auth/WelcomeScreen';
 import LoginScreen   from './src/screens/auth/LoginScreen';
@@ -35,12 +36,28 @@ const NAV_COLORS = {
   inactive:   '#BCBCBC',
 };
 
-// ── MAIN TAB SCREENS ──────────────────────────────────────────────────────────
+// ── CLIENT TAB SCREENS ────────────────────────────────────────────────────────
 import HomeScreen      from './src/screens/HomeScreen';
 import SearchScreen    from './src/screens/SearchScreen';
 import TasksScreen     from './src/screens/TasksScreen';
 import MyTaskersScreen from './src/screens/MyTaskersScreen';
 import ProfileScreen   from './src/screens/ProfileScreen';
+import ManageTaskScreen from './src/screens/ManageTaskScreen';
+
+// ── TASKER SCREENS ────────────────────────────────────────────────────────────
+import TaskerDashboardScreen    from './src/screens/tasker/TaskerDashboardScreen';
+import TaskerAvailabilityScreen  from './src/screens/tasker/TaskerAvailabilityScreen';
+import TaskerTasksScreen        from './src/screens/tasker/TaskerTasksScreen';
+import TaskerProfileScreen      from './src/screens/tasker/TaskerProfileScreen';
+import ActiveTaskDetailsScreen  from './src/screens/tasker/ActiveTaskDetailsScreen';
+import TaskerEditBioScreen      from './src/screens/tasker/TaskerEditBioScreen';
+import TaskerSkillsRatesScreen  from './src/screens/tasker/TaskerSkillsRatesScreen';
+import TaskerPortfolioScreen    from './src/screens/tasker/TaskerPortfolioScreen';
+import TaskerBankDetailsScreen  from './src/screens/tasker/TaskerBankDetailsScreen';
+import TaskerEarningsScreen     from './src/screens/tasker/TaskerEarningsScreen';
+
+// ── SHARED SCREENS ────────────────────────────────────────────────────────────
+import ChatScreen from './src/screens/chat/ChatScreen';
 
 // ── PROFILE SUB-SCREENS ───────────────────────────────────────────────────────
 import AccountSettingsScreen      from './src/screens/profile/AccountSettingsScreen';
@@ -61,15 +78,17 @@ import TaskScopePetsScreen      from './src/screens/booking/TaskScopePetsScreen'
 import TaskDateTimeScreen       from './src/screens/booking/TaskDateTimeScreen';
 import TaskLoadingScreen        from './src/screens/booking/TaskLoadingScreen';
 import TaskerListScreen         from './src/screens/booking/TaskerListScreen';
-import TaskerProfileScreen      from './src/screens/booking/TaskerProfileScreen';
+import BookingTaskerProfileScreen from './src/screens/booking/TaskerProfileScreen';
 import TaskDetailsScreen        from './src/screens/booking/TaskDetailsScreen';
 import ReviewConfirmScreen      from './src/screens/booking/ReviewConfirmScreen';
 
 // ── NAVIGATOR INSTANCES ───────────────────────────────────────────────────────
-const OuterStack = createNativeStackNavigator(); // Splash / Auth / App
-const AuthStack  = createNativeStackNavigator(); // Welcome / Login / Signup
-const RootStack  = createNativeStackNavigator(); // Tabs + funnel + profile
-const Tab        = createBottomTabNavigator();
+const OuterStack   = createNativeStackNavigator(); // Splash / Auth / App
+const AuthStack    = createNativeStackNavigator(); // Welcome / Login / Signup
+const RootStack    = createNativeStackNavigator(); // Client tabs + funnel + profile
+const TaskerStack  = createNativeStackNavigator(); // Tasker tabs + task screens
+const Tab          = createBottomTabNavigator();
+const TaskerTab    = createBottomTabNavigator();
 
 // ── AUTH NAVIGATOR ─────────────────────────────────────────────────────────────
 function AuthNavigator() {
@@ -99,10 +118,7 @@ function MainTabs() {
           paddingBottom:   12,
           paddingTop:      8,
         },
-        tabBarLabelStyle: {
-          fontSize:   11,
-          fontWeight: '600',
-        },
+        tabBarShowLabel: false,
         tabBarIcon: ({ focused, color }) => {
           const icons = {
             HomeTab:      focused ? 'home'          : 'home-outline',
@@ -148,6 +164,98 @@ function MainTabs() {
   );
 }
 
+// ── TASKER BOTTOM TABS ────────────────────────────────────────────────────────
+function TaskerTabs() {
+  return (
+    <TaskerTab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor:   NAV_COLORS.accent,
+        tabBarInactiveTintColor: NAV_COLORS.inactive,
+        tabBarStyle: {
+          backgroundColor: NAV_COLORS.white,
+          borderTopColor:  NAV_COLORS.border,
+          borderTopWidth:  1,
+          height:          75,
+          paddingBottom:   12,
+          paddingTop:      8,
+        },
+        tabBarShowLabel: false,
+        tabBarIcon: ({ focused, color }) => {
+          const icons = {
+            DashboardTab: focused ? 'hammer'         : 'hammer-outline',
+            ScheduleTab:  focused ? 'calendar'       : 'calendar-outline',
+            TTasksTab:    focused ? 'briefcase'      : 'briefcase-outline',
+            TProfileTab:  focused ? 'person-circle' : 'person-circle-outline',
+          };
+          return <Ionicons name={icons[route.name]} size={24} color={color} />;
+        },
+      })}
+    >
+      <TaskerTab.Screen name="DashboardTab" component={TaskerDashboardScreen}    options={{ title: 'Dashboard' }} />
+      <TaskerTab.Screen name="ScheduleTab"  component={TaskerAvailabilityScreen} options={{ title: 'Schedule'  }} />
+      <TaskerTab.Screen name="TTasksTab"    component={TaskerTasksScreen}        options={{ title: 'My Tasks'  }} />
+      <TaskerTab.Screen name="TProfileTab"  component={TaskerProfileScreen}      options={{ title: 'Profile'   }} />
+    </TaskerTab.Navigator>
+  );
+}
+
+// ── TASKER NAVIGATOR (stack wrapping tabs + task detail screens) ──────────────
+function TaskerNavigator() {
+  return (
+    <TaskerStack.Navigator
+      screenOptions={{
+        headerStyle:         { backgroundColor: NAV_COLORS.white },
+        headerTintColor:     NAV_COLORS.primary,
+        headerTitleStyle:    { fontWeight: '700', fontSize: 17, color: NAV_COLORS.primary },
+        headerShadowVisible: false,
+        contentStyle:        { backgroundColor: NAV_COLORS.background },
+      }}
+    >
+      <TaskerStack.Screen
+        name="TaskerTabs"
+        component={TaskerTabs}
+        options={{ headerShown: false }}
+      />
+      <TaskerStack.Screen
+        name="ActiveTaskDetails"
+        component={ActiveTaskDetailsScreen}
+        options={{ title: '', headerBackTitle: '' }}
+      />
+      <TaskerStack.Screen
+        name="Chat"
+        component={ChatScreen}
+        options={{ title: '', headerBackTitle: '' }}
+      />
+      <TaskerStack.Screen
+        name="TaskerEditBio"
+        component={TaskerEditBioScreen}
+        options={{ title: 'Edit Bio', headerBackTitle: '' }}
+      />
+      <TaskerStack.Screen
+        name="TaskerSkillsRates"
+        component={TaskerSkillsRatesScreen}
+        options={{ title: 'Skills & Rates', headerBackTitle: '' }}
+      />
+      <TaskerStack.Screen
+        name="TaskerPortfolio"
+        component={TaskerPortfolioScreen}
+        options={{ title: 'Portfolio', headerBackTitle: '' }}
+      />
+      <TaskerStack.Screen
+        name="TaskerBankDetails"
+        component={TaskerBankDetailsScreen}
+        options={{ title: 'Bank Details', headerBackTitle: '' }}
+      />
+      <TaskerStack.Screen
+        name="TaskerEarnings"
+        component={TaskerEarningsScreen}
+        options={{ title: 'Earnings', headerBackTitle: '' }}
+      />
+    </TaskerStack.Navigator>
+  );
+}
+
 // ── MAIN APP STACK (tabs + funnel + profile sub-screens) ─────────────────────
 function AppNavigator() {
   return (
@@ -165,6 +273,20 @@ function AppNavigator() {
         name="MainTabs"
         component={MainTabs}
         options={{ headerShown: false }}
+      />
+
+      {/* ── Manage Task ── */}
+      <RootStack.Screen
+        name="ManageTask"
+        component={ManageTaskScreen}
+        options={{ title: 'Manage Task' }}
+      />
+
+      {/* ── Chat (shared) ── */}
+      <RootStack.Screen
+        name="Chat"
+        component={ChatScreen}
+        options={{ title: '', headerBackTitle: '' }}
       />
 
       {/* ── Search modal ── */}
@@ -283,7 +405,7 @@ function AppNavigator() {
       />
       <RootStack.Screen
         name="TaskerProfile"
-        component={TaskerProfileScreen}
+        component={BookingTaskerProfileScreen}
         options={{ title: '', headerBackTitle: '' }}
       />
       <RootStack.Screen
@@ -300,10 +422,11 @@ function AppNavigator() {
   );
 }
 
-// ── ROOT NAVIGATOR (decides Splash → Auth or App) ────────────────────────────
+// ── ROOT NAVIGATOR (decides Splash → Auth → Client or Tasker app) ────────────
 function RootNavigator() {
   const [showSplash, setShowSplash] = useState(true);
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn }  = useAuth();
+  const { isTaskerMode } = useAppMode();
 
   if (showSplash) {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
@@ -312,7 +435,11 @@ function RootNavigator() {
   return (
     <OuterStack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
       {isLoggedIn ? (
-        <OuterStack.Screen name="App"  component={AppNavigator} />
+        isTaskerMode ? (
+          <OuterStack.Screen name="TaskerApp" component={TaskerNavigator} />
+        ) : (
+          <OuterStack.Screen name="App" component={AppNavigator} />
+        )
       ) : (
         <OuterStack.Screen name="Auth" component={AuthNavigator} />
       )}
@@ -334,12 +461,14 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <SafeAreaProvider>
-        <StatusBar style="auto" />
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <AppModeProvider>
+        <SafeAreaProvider>
+          <StatusBar style="auto" />
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </AppModeProvider>
     </AuthProvider>
   );
 }
