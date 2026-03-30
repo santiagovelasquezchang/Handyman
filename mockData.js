@@ -1193,3 +1193,176 @@ export const TASKER_SCHEDULE = {
   },
   timeOffDays: ['2026-04-06','2026-04-13'],
 };
+
+// ── HOME SCREEN DATA ──────────────────────────────────────────────────────────
+// Feeds ClientHomeScreen modules: quick-book carousel, rebook, spaces summary.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Five services shown in the horizontal "Quick Book" strip on Home.
+export const HOME_QUICK_SERVICES = [
+  {
+    id: 'c2',
+    name: 'Cleaning',
+    icon: 'sparkles-outline',
+    image: pic('cleaning', 300, 300),
+    baseRate: 22,
+    groupColor: '#2E8B57',
+  },
+  {
+    id: 'c16',
+    name: 'AC Repair',
+    icon: 'snow-outline',
+    image: pic('acrepair', 300, 300),
+    baseRate: 40,
+    groupColor: '#4A9CF7',
+  },
+  {
+    id: 'c18',
+    name: 'Electrical',
+    icon: 'flash-outline',
+    image: pic('electrical', 300, 300),
+    baseRate: 35,
+    groupColor: '#F7B84A',
+  },
+  {
+    id: 'c5',
+    name: 'Plumbing',
+    icon: 'water-outline',
+    image: pic('plumbing', 300, 300),
+    baseRate: 30,
+    groupColor: '#4A6CF7',
+  },
+  {
+    id: 'c1',
+    name: 'TV Mounting',
+    icon: 'tv-outline',
+    image: pic('tvmount', 300, 300),
+    baseRate: 35,
+    groupColor: '#1A374D',
+  },
+  {
+    id: 'c3',
+    name: 'Painting',
+    icon: 'color-palette-outline',
+    image: pic('painting', 300, 300),
+    baseRate: 25,
+    groupColor: '#E86C3A',
+  },
+];
+
+// Providers the user has worked with before — shown in "Your Team" rebook strip.
+export const HOME_TRUSTED_PROVIDERS = [
+  {
+    id: 't2',
+    name: 'María Salcedo',
+    specialty: 'Cleaning',
+    avatar: avatar(20),
+    rating: 5.0,
+    lastServiceDate: 'Mar 28',
+    categoryId: 'c2',
+  },
+  {
+    id: 't1',
+    name: 'José Rodríguez',
+    specialty: 'TV Mounting',
+    avatar: avatar(11),
+    rating: 4.9,
+    lastServiceDate: 'Mar 10',
+    categoryId: 'c1',
+  },
+  {
+    id: 't5',
+    name: 'Luis Chirinos',
+    specialty: 'AC Repair',
+    avatar: avatar(57),
+    rating: 4.8,
+    lastServiceDate: 'Feb 18',
+    categoryId: 'c16',
+  },
+];
+
+// User's primary space — shown as a summary card on Home.
+export const HOME_PRIMARY_SPACE = {
+  id: 's1',
+  name: 'Downtown Apartment',
+  address: 'Av. Francisco de Miranda, Altamira',
+  type: 'apartment',
+  activeRecurring: 1,
+  upcomingCount: 1,
+  upcomingService: 'Cleaning · Apr 5',
+  healthLabel: '1 upcoming service',
+  healthColor: '#FF7F3F',   // orange = something scheduled
+};
+
+// Upcoming booking snapshot shown on Home header area.
+export const HOME_UPCOMING_BOOKING = {
+  id: 'th1',
+  service: 'Cleaning',
+  provider: 'María Salcedo',
+  providerAvatar: avatar(20),
+  date: 'Sat, Apr 5',
+  time: '10:00 AM',
+  spaceLabel: 'Downtown Apartment',
+};
+
+// ── SERVICES CATALOG (grouped for ServicesHomeScreen) ────────────────────────
+// Each group drives one vertical section in the catalog.
+// Items are lightweight — they link back to CATEGORIES by id for full details.
+// ─────────────────────────────────────────────────────────────────────────────
+export const SERVICE_CATALOG_GROUPS = [
+  {
+    key: 'technical',
+    title: 'Technical & Repairs',
+    icon: 'flash-outline',
+    color: '#4A6CF7',
+    services: [
+      { id: 'c16', name: 'AC Repair & Service',       icon: 'snow-outline',       baseRate: 40, groupColor: '#4A9CF7' },
+      { id: 'c18', name: 'Electrical Work',            icon: 'flash-outline',       baseRate: 35, groupColor: '#F7B84A' },
+      { id: 'c5',  name: 'Plumbing',                   icon: 'water-outline',       baseRate: 30, groupColor: '#4A6CF7' },
+      { id: 'c17', name: 'Appliance Repair',           icon: 'hardware-chip-outline',baseRate: 38, groupColor: '#9B59B6' },
+      { id: 'c19', name: 'Smart Home Setup',           icon: 'wifi-outline',        baseRate: 45, groupColor: '#2ECC71' },
+      { id: 'c20', name: 'Security & Locks',           icon: 'lock-closed-outline', baseRate: 35, groupColor: '#E74C3C' },
+    ],
+  },
+  {
+    key: 'cleaning',
+    title: 'Cleaning & Upkeep',
+    icon: 'sparkles-outline',
+    color: '#2E8B57',
+    services: [
+      { id: 'c2',  name: 'Standard Cleaning',          icon: 'sparkles-outline',    baseRate: 22, groupColor: '#2E8B57' },
+      { id: 'c21', name: 'Deep Cleaning',              icon: 'search-outline',      baseRate: 30, groupColor: '#27AE60' },
+      { id: 'c22', name: 'Post-Construction Clean',    icon: 'construct-outline',   baseRate: 35, groupColor: '#16A085' },
+      { id: 'c23', name: 'Move-in / Move-out Clean',   icon: 'home-outline',        baseRate: 32, groupColor: '#1ABC9C' },
+      { id: 'c24', name: 'Yard Work & Gardening',      icon: 'leaf-outline',        baseRate: 28, groupColor: '#27AE60' },
+      { id: 'c25', name: 'Pressure Washing',           icon: 'water-outline',       baseRate: 30, groupColor: '#2980B9' },
+    ],
+  },
+  {
+    key: 'improvements',
+    title: 'Home Improvements',
+    icon: 'hammer-outline',
+    color: '#1A374D',
+    services: [
+      { id: 'c3',  name: 'Interior Painting',          icon: 'color-palette-outline',baseRate: 25, groupColor: '#E86C3A' },
+      { id: 'c26', name: 'Exterior Painting',          icon: 'brush-outline',       baseRate: 28, groupColor: '#D35400' },
+      { id: 'c27', name: 'Flooring & Tile',            icon: 'grid-outline',        baseRate: 32, groupColor: '#8E44AD' },
+      { id: 'c28', name: 'Drywall & Plastering',       icon: 'albums-outline',      baseRate: 28, groupColor: '#7F8C8D' },
+      { id: 'c29', name: 'Carpentry & Shelving',       icon: 'cube-outline',        baseRate: 30, groupColor: '#795548' },
+      { id: 'c30', name: 'Door & Window Repair',       icon: 'keypad-outline',      baseRate: 28, groupColor: '#1A374D' },
+    ],
+  },
+  {
+    key: 'moving',
+    title: 'Moving & Heavy Lifting',
+    icon: 'cube-outline',
+    color: '#FF7F3F',
+    services: [
+      { id: 'c1',  name: 'TV Mounting',                icon: 'tv-outline',          baseRate: 35, groupColor: '#1A374D' },
+      { id: 'c6',  name: 'Furniture Assembly',         icon: 'cube-outline',        baseRate: 28, groupColor: '#FF7F3F' },
+      { id: 'c31', name: 'Moving Help',                icon: 'car-outline',         baseRate: 30, groupColor: '#E67E22' },
+      { id: 'c32', name: 'Heavy Item Moving',          icon: 'barbell-outline',     baseRate: 35, groupColor: '#D35400' },
+      { id: 'c33', name: 'Box Packing & Unpacking',    icon: 'archive-outline',     baseRate: 22, groupColor: '#FF7F3F' },
+    ],
+  },
+];

@@ -24,16 +24,20 @@ import { COLORS, FONTS, RADIUS, SHADOW } from '../theme';
 const SECTIONS = [
   [
     { id: 'AccountSettings',      icon: 'person-outline',             label: 'Account Settings',      value: USER_PROFILE.email },
-    { id: 'SavedAddresses',       icon: 'location-outline',           label: 'Saved Addresses' },
     { id: 'PaymentMethods',       icon: 'card-outline',               label: 'Payment Methods' },
     { id: 'NotificationSettings', icon: 'notifications-outline',      label: 'Notification Settings' },
+  ],
+  [
+    { id: 'Spaces',               icon: 'map-outline',                label: 'My Spaces' },
+    { id: 'MyTeam',               icon: 'people-outline',             label: 'My Team' },
+    { id: 'MembershipSummary',    icon: 'shield-checkmark-outline',   label: 'Membership' },
   ],
   [
     { id: 'InviteFriends',        icon: 'gift-outline',               label: 'Invite Friends' },
     { id: 'HelpCenter',           icon: 'help-circle-outline',        label: 'Help Center' },
   ],
   [
-    { id: 'become',               icon: 'swap-horizontal-outline',    label: 'Switch to Tasker Mode', accent: true },
+    { id: 'become',               icon: 'swap-horizontal-outline',    label: 'Switch to Provider Mode', accent: true },
     { id: 'logout',               icon: 'log-out-outline',            label: 'Log Out',          danger: true },
   ],
 ];
@@ -178,18 +182,18 @@ export default function ProfileScreen({ navigation }) {
       {/* ── Stats bar ── */}
       <View style={styles.statsBar}>
         <View style={styles.statItem}>
-          <Text style={styles.statValue}>{USER_PROFILE.pastTaskerIds.length}</Text>
-          <Text style={styles.statLabel}>Taskers</Text>
-        </View>
-        <View style={styles.statDivider} />
-        <View style={styles.statItem}>
           <Text style={styles.statValue}>{TOTAL_TASKS}</Text>
-          <Text style={styles.statLabel}>Tasks</Text>
+          <Text style={styles.statLabel}>Bookings</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Text style={styles.statValue}>0</Text>
-          <Text style={styles.statLabel}>Favorites</Text>
+          <Text style={styles.statValue}>{USER_PROFILE.pastTaskerIds.length}</Text>
+          <Text style={styles.statLabel}>My Team</Text>
+        </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>2</Text>
+          <Text style={styles.statLabel}>Spaces</Text>
         </View>
       </View>
 
