@@ -79,7 +79,8 @@ export function ScreenContainer({ children, style, scrollable = true, padded = t
   const insets = useSafeAreaInsets();
   const Wrap   = scrollable ? ScrollView : View;
   const inner  = [
-    padded && { padding: 16 },
+    { paddingTop: insets.top },
+    padded && { padding: 16, paddingTop: insets.top + 16 },
     { paddingBottom: insets.bottom + 40 },
     style,
   ];
@@ -92,6 +93,40 @@ export function ScreenContainer({ children, style, scrollable = true, padded = t
       >
         {children}
       </Wrap>
+    </View>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  TopHeaderBackground
+//  Edge-to-edge colored header that extends to the top of the screen.
+//  The background color bleeds into the status bar area, but inner content
+//  is pushed down by paddingTop: insets.top + extraPadding.
+//  Accepts LinearGradient-style props (colors, start, end) or a flat color.
+// ─────────────────────────────────────────────────────────────────────────────
+export function TopHeaderBackground({
+  children, style, color = COLORS.primary,
+  colors, start, end, extraPadding = 16,
+}) {
+  const insets = useSafeAreaInsets();
+  const contentPadding = { paddingTop: insets.top + extraPadding };
+
+  if (colors) {
+    return (
+      <LinearGradient
+        colors={colors}
+        start={start ?? { x: 0, y: 0 }}
+        end={end ?? { x: 1, y: 1 }}
+        style={[style]}
+      >
+        <View style={contentPadding}>{children}</View>
+      </LinearGradient>
+    );
+  }
+
+  return (
+    <View style={[{ backgroundColor: color }, style]}>
+      <View style={contentPadding}>{children}</View>
     </View>
   );
 }

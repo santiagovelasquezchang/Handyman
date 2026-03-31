@@ -9,7 +9,7 @@
 //    5. Global spacing — section gaps 32, SectionHeader margin 16
 // ─────────────────────────────────────────────────────────────────────────────
 
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, FlatList,
   TouchableOpacity, Image, Animated, Dimensions,
@@ -22,12 +22,13 @@ import {
   USER_PROFILE,
   HOME_QUICK_SERVICES,
   HOME_TRUSTED_PROVIDERS,
-  HOME_PRIMARY_SPACE,
+  TASKERS,
+  CATEGORIES,
   HOME_UPCOMING_BOOKING,
 } from '../../mockData';
+import { useSpaces } from '../context/SpacesContext';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../theme';
-import { useAuth } from '../context/AuthContext';
-import { SectionHeader, ServiceCard, PrimaryButton, AnimatedPressable } from '../components/ui';
+import { SectionHeader, ServiceCard, AnimatedPressable, TopHeaderBackground } from '../components/ui';
 
 const { width: SW } = Dimensions.get('window');
 const CARD_SIZE     = 148;
@@ -171,25 +172,18 @@ function SpaceSummaryCard({ space, onPress }) {
     >
       <View style={s.spaceCard}>
         <View style={s.spaceIconWrap}>
-          <Ionicons name="home-outline" size={22} color={COLORS.primary} />
+          <Ionicons name={space.icon ?? 'home-outline'} size={20} color={COLORS.primary} />
         </View>
-        <View style={{ flex: 1 }}>
-          <Text style={s.spaceName}>{space.name}</Text>
-          <Text style={s.spaceAddr} numberOfLines={1}>{space.address}</Text>
+        {/* flex:1 + overflow:hidden keeps text from escaping the fixed card width */}
+        <View style={s.spaceContent}>
+          <Text style={s.spaceName} numberOfLines={1} ellipsizeMode="tail">{space.name}</Text>
+          <Text style={s.spaceAddr} numberOfLines={1} ellipsizeMode="tail">{space.address}</Text>
           <View style={s.spaceHealthRow}>
             <View style={[s.healthDot, { backgroundColor: space.healthColor }]} />
-            <Text style={s.healthLabel}>{space.healthLabel}</Text>
+            <Text style={s.healthLabel} numberOfLines={1}>{space.healthLabel}</Text>
           </View>
         </View>
-        <View style={s.spaceRight}>
-          {space.activeRecurring > 0 && (
-            <View style={s.spaceChip}>
-              <Ionicons name="repeat-outline" size={11} color={COLORS.accent} />
-              <Text style={s.spaceChipText}>{space.activeRecurring} recurring</Text>
-            </View>
-          )}
-          <Ionicons name="chevron-forward" size={15} color={COLORS.inactive} style={{ marginTop: 4 }} />
-        </View>
+        <Ionicons name="chevron-forward" size={14} color={COLORS.inactive} />
       </View>
     </AnimatedPressable>
   );
@@ -256,17 +250,31 @@ function MaintenanceCard({ onPress }) {
 export default function HomeScreen({ navigation }) {
   const insets    = useSafeAreaInsets();
   const firstName = USER_PROFILE.firstName;
+  const { spaces } = useSpaces();
 
-  const navigate = (screen, params) => navigation.navigate(screen, params);
+  // Cross-tab navigation helper — resolves the correct tab+screen path
+  const navigate = (screen, params) => {
+    const profileScreens = ['NotificationSettings', 'Spaces', 'SpaceDetails', 'AddSpace', 'EditSpace', 'MyTeam', 'SavedAddresses', 'AccountSettings', 'PaymentMethods', 'MembershipSummary'];
+    const servicesScreens = ['EmergencyRequest', 'BookService', 'ServiceCategory'];
+    const activityScreens = ['BookingDetails', 'RecurringServiceDetails'];
+
+    if (profileScreens.includes(screen)) {
+      navigation.navigate('ProfileTab', { screen, params });
+    } else if (servicesScreens.includes(screen)) {
+      navigation.navigate('ServicesTab', { screen, params });
+    } else if (activityScreens.includes(screen)) {
+      navigation.navigate('ActivityTab', { screen, params });
+    } else {
+      navigation.navigate(screen, params);
+    }
+  };
 
   return (
     <View style={s.root}>
-      {/* ── Premium gradient header (Bug 1 fix: paddingBottom 44) ───────── */}
-      <LinearGradient
+      {/* ── Premium gradient header ───────────────────────────────────── */}
+      <TopHeaderBackground
         colors={['#0F2233', COLORS.primary, '#1E4562']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[s.header, { paddingTop: insets.top + 16 }]}
+        style={s.header}
       >
         <View style={s.headerRow}>
           <Text style={s.brandName}>HANDYMAN</Text>
@@ -291,7 +299,7 @@ export default function HomeScreen({ navigation }) {
         <View style={s.searchWrap}>
           <SearchBar onPress={() => navigate('Search')} />
         </View>
-      </LinearGradient>
+      </TopHeaderBackground>
 
       {/* ── Scrollable body ─────────────────────────────────────────────────── */}
       <ScrollView
@@ -335,30 +343,44 @@ export default function HomeScreen({ navigation }) {
               <ServiceCard
                 service={item}
                 size={CARD_SIZE}
-                onPress={() => navigate('BookService', { service: item.name })}
+                onPress={() => {
+                    const fullCategory = CATEGORIES.find((c) => c.id === item.id);
+                    navigate('BookService', { service: item.name, category: fullCategory ?? { name: item.name, scoping_details: [] } });
+                  }}
               />
             )}
           />
         </View>
 
-        {/* 4 - Space summary */}
+        {/* 4 - My Spaces horizontal scroll */}
         <View style={s.section}>
           <SectionHeader
             title="My Spaces"
             onSeeAll={() => navigate('Spaces')}
           />
-          <SpaceSummaryCard
-            space={HOME_PRIMARY_SPACE}
-            onPress={() => navigate('SpaceDetails', { space: HOME_PRIMARY_SPACE })}
+          <FlatList
+            data={spaces}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 12 }}
+            renderItem={({ item }) => (
+              <SpaceSummaryCard
+                space={item}
+                onPress={() => navigate('SpaceDetails', { space: item })}
+              />
+            )}
+            ListFooterComponent={
+              <TouchableOpacity
+                style={s.addSpaceCard}
+                onPress={() => navigate('AddSpace')}
+                activeOpacity={0.8}
+              >
+                <Ionicons name="add-circle-outline" size={24} color={COLORS.accent} />
+                <Text style={s.addSpaceCardText}>Add Space</Text>
+              </TouchableOpacity>
+            }
           />
-          <TouchableOpacity
-            style={s.addSpaceRow}
-            onPress={() => navigate('AddSpace')}
-            activeOpacity={0.8}
-          >
-            <Ionicons name="add-circle-outline" size={16} color={COLORS.accent} />
-            <Text style={s.addSpaceText}>Add another space</Text>
-          </TouchableOpacity>
         </View>
 
         {/* 5 - Your Team rebook strip */}
@@ -377,7 +399,10 @@ export default function HomeScreen({ navigation }) {
               renderItem={({ item }) => (
                 <ProviderRebookCard
                   provider={item}
-                  onPress={() => navigate('BookService', { service: item.specialty })}
+                  onPress={() => {
+                    const tasker = TASKERS.find((t) => t.id === item.id);
+                    if (tasker) navigation.navigate('TaskerProfile', { tasker });
+                  }}
                 />
               )}
             />
@@ -557,23 +582,27 @@ const s = StyleSheet.create({
   upcomingStatusDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: COLORS.success },
   upcomingStatusText:{ fontFamily: FONTS.family, fontSize: 10, color: COLORS.success },
 
-  // ── Space card ────────────────────────────────────────────────────────────
+  // ── Space card (fixed dimensions for uniform horizontal scroll) ──────────
   spaceCard: {
+    width: 220,
+    height: 90,               // fixed height — text truncates, layout never shifts
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
-    padding: 16,
+    padding: 14,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
+    gap: 12,
     ...SHADOW.card,
   },
   spaceIconWrap: {
-    width: 50, height: 50, borderRadius: RADIUS.md,
+    width: 42, height: 42, borderRadius: RADIUS.md,
     backgroundColor: COLORS.primaryLight,
     alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0,
   },
-  spaceName:     { fontFamily: FONTS.familySemibold, fontSize: 14, color: COLORS.textPrimary },
-  spaceAddr:     { fontFamily: FONTS.family, fontSize: 12, color: COLORS.textSecondary, marginTop: 2 },
+  spaceContent:  { flex: 1, overflow: 'hidden' },
+  spaceName:     { fontFamily: FONTS.familySemibold, fontSize: 13, color: COLORS.textPrimary },
+  spaceAddr:     { fontFamily: FONTS.family, fontSize: 11, color: COLORS.textSecondary, marginTop: 2 },
   spaceHealthRow:{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 },
   healthDot:     { width: 7, height: 7, borderRadius: 3.5 },
   healthLabel:   { fontFamily: FONTS.family, fontSize: 11, color: COLORS.textSecondary },
@@ -589,6 +618,22 @@ const s = StyleSheet.create({
     marginTop: 14, paddingVertical: 2,
   },
   addSpaceText:  { fontFamily: FONTS.familySemibold, fontSize: 13, color: COLORS.accent },
+
+  // "Add Space" card — sits at end of horizontal spaces scroll
+  addSpaceCard: {
+    width: 110,
+    backgroundColor: COLORS.white,
+    borderRadius: RADIUS.lg,
+    borderWidth: 1.5,
+    borderColor: COLORS.accent,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 20,
+    ...SHADOW.card,
+  },
+  addSpaceCardText: { fontFamily: FONTS.familySemibold, fontSize: 12, color: COLORS.accent },
 
   // ── Provider rebook card (Bug 4 fix: width 140, avatar 64, full rebook) ──
   providerCard: {

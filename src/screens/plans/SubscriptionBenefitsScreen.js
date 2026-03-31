@@ -7,6 +7,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
+import { TopHeaderBackground } from '../../components/ui';
 
 const COMPARISON = [
   { feature: 'Included services / month', home: '2', pro: '5', biz: 'Unlimited' },
@@ -27,11 +28,11 @@ export default function SubscriptionBenefitsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: insets.bottom + 32 }}
       >
-        <View style={styles.hero}>
+        <TopHeaderBackground color={COLORS.primary} style={styles.hero}>
           <Ionicons name="grid-outline" size={24} color={COLORS.white} style={{ marginBottom: 6 }} />
           <Text style={styles.heroTitle}>Compare Plans</Text>
           <Text style={styles.heroSub}>Find the right plan for your needs</Text>
-        </View>
+        </TopHeaderBackground>
 
         <View style={styles.tableWrap}>
           {/* Header */}
@@ -78,7 +79,7 @@ export default function SubscriptionBenefitsScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.background },
-  hero: { backgroundColor: COLORS.primary, paddingHorizontal: 20, paddingTop: 22, paddingBottom: 24, alignItems: 'center' },
+  hero: { paddingHorizontal: 20, paddingBottom: 24, alignItems: 'center' },
   heroTitle: { fontFamily: FONTS.familyBold, fontSize: 22, color: COLORS.white },
   heroSub:   { fontFamily: FONTS.family, fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 4 },
 

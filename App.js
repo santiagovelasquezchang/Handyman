@@ -24,6 +24,7 @@ import useFonts from './src/hooks/useFonts';
 // ── Contexts ──────────────────────────────────────────────────────────────────
 import { AuthProvider,    useAuth    } from './src/context/AuthContext';
 import { AppModeProvider, useAppMode } from './src/context/AppModeContext';
+import { SpacesProvider               } from './src/context/SpacesContext';
 
 // ── Auth screens ──────────────────────────────────────────────────────────────
 import SplashScreen  from './src/screens/SplashScreen';
@@ -90,12 +91,14 @@ export default function App() {
   return (
     <AuthProvider>
       <AppModeProvider>
+        <SpacesProvider>
         <SafeAreaProvider>
           <StatusBar style="auto" />
           <NavigationContainer>
             <RootNavigator />
           </NavigationContainer>
         </SafeAreaProvider>
+        </SpacesProvider>
       </AppModeProvider>
     </AuthProvider>
   );

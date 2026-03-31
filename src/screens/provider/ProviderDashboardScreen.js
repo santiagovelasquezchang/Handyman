@@ -10,6 +10,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
+import { TopHeaderBackground } from '../../components/ui';
 import { TASKER_PROFILE } from '../../../mockData';
 
 const TODAY_JOBS = [
@@ -82,15 +83,17 @@ export default function ProviderDashboardScreen({ navigation }) {
         contentContainerStyle={{ paddingBottom: insets.bottom + 32 }}
       >
         {/* Navy header */}
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.headerGreeting}>Good morning,</Text>
-            <Text style={styles.headerName}>{TASKER_PROFILE.name} 👋</Text>
+        <TopHeaderBackground color={COLORS.primary} style={styles.header}>
+          <View style={styles.headerInner}>
+            <View>
+              <Text style={styles.headerGreeting}>Good morning,</Text>
+              <Text style={styles.headerName}>{TASKER_PROFILE.name} 👋</Text>
+            </View>
+            <TouchableOpacity style={styles.notifBtn}>
+              <Ionicons name="notifications-outline" size={22} color={COLORS.white} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.notifBtn}>
-            <Ionicons name="notifications-outline" size={22} color={COLORS.white} />
-          </TouchableOpacity>
-        </View>
+        </TopHeaderBackground>
 
         {/* Earnings summary */}
         <View style={styles.earningsRow}>
@@ -161,8 +164,10 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.background },
 
   header: {
-    backgroundColor: COLORS.primary, paddingHorizontal: 20,
-    paddingTop: 22, paddingBottom: 24,
+    paddingHorizontal: 20,
+    paddingBottom: 24,
+  },
+  headerInner: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
   },
   headerGreeting: { fontFamily: FONTS.family, fontSize: 13, color: 'rgba(255,255,255,0.7)' },

@@ -1424,7 +1424,7 @@ export const HOME_TRUSTED_PROVIDERS = [
   },
 ];
 
-// User's primary space — shown as a summary card on Home.
+// User's primary space — kept for backwards compat with any other screen that imports it.
 export const HOME_PRIMARY_SPACE = {
   id: 's1',
   name: 'Downtown Apartment',
@@ -1434,8 +1434,36 @@ export const HOME_PRIMARY_SPACE = {
   upcomingCount: 1,
   upcomingService: 'Cleaning · Apr 5',
   healthLabel: '1 upcoming service',
-  healthColor: '#FF7F3F',   // orange = something scheduled
+  healthColor: '#FF7F3F',
 };
+
+// All user spaces — shown as a horizontal scroll on Home.
+export const MY_SPACES = [
+  {
+    id: 's1',
+    name: 'Downtown Apartment',
+    address: 'Av. Francisco de Miranda, Altamira',
+    type: 'apartment',
+    icon: 'home-outline',
+    activeRecurring: 1,
+    upcomingCount: 1,
+    upcomingService: 'Cleaning · Apr 5',
+    healthLabel: '1 upcoming',
+    healthColor: '#FF7F3F',
+  },
+  {
+    id: 's2',
+    name: 'El Rosal Office',
+    address: 'Av. Venezuela, El Rosal, Caracas',
+    type: 'office',
+    icon: 'business-outline',
+    activeRecurring: 0,
+    upcomingCount: 0,
+    upcomingService: null,
+    healthLabel: 'No services',
+    healthColor: '#BCBCBC',
+  },
+];
 
 // Upcoming booking snapshot shown on Home header area.
 export const HOME_UPCOMING_BOOKING = {

@@ -15,8 +15,11 @@ const SERVICE_TYPES = [
 ];
 
 export default function BookServiceScreen({ route, navigation }) {
-  const insets  = useSafeAreaInsets();
-  const service = route?.params?.service ?? 'Service';
+  const insets   = useSafeAreaInsets();
+  const service  = route?.params?.service ?? 'Service';
+  // Full category object (with scoping_details) passed from HomeScreen/ServicesScreen.
+  // Falls back to a minimal shape so the funnel never crashes on undefined.
+  const category = route?.params?.category ?? { name: service, scoping_details: [] };
   const [type, setType] = useState('one_time');
 
   return (
@@ -52,7 +55,7 @@ export default function BookServiceScreen({ route, navigation }) {
             if (type === 'recurring') {
               navigation.navigate('SetUpRecurringService', { service: { service } });
             } else {
-              navigation.navigate('TaskLocation', { category: { name: service } });
+              navigation.navigate('TaskLocation', { category });
             }
           }}
         >

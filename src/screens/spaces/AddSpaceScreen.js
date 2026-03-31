@@ -10,6 +10,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
+import { useSpaces } from '../../context/SpacesContext';
 
 const TYPES = [
   { key: 'home',      label: 'Home',       icon: 'home-outline' },
@@ -19,21 +20,29 @@ const TYPES = [
   { key: 'other',     label: 'Other',      icon: 'location-outline' },
 ];
 
+const TYPE_ICONS = {
+  home:      'home-outline',
+  apartment: 'business-outline',
+  office:    'briefcase-outline',
+  store:     'storefront-outline',
+  other:     'location-outline',
+};
+
 export default function AddSpaceScreen({ navigation }) {
   const insets = useSafeAreaInsets();
+  const { addSpace } = useSpaces();
   const [name,    setName]    = useState('');
   const [address, setAddress] = useState('');
   const [type,    setType]    = useState('home');
   const [notes,   setNotes]   = useState('');
 
   const handleSave = () => {
-    if (!name || !address) {
+    if (!name.trim() || !address.trim()) {
       Alert.alert('Missing Fields', 'Please enter a name and address.');
       return;
     }
-    Alert.alert('Space Added', `"${name}" has been added to your spaces.`, [
-      { text: 'OK', onPress: () => navigation.goBack() },
-    ]);
+    addSpace({ name: name.trim(), address: address.trim(), type, notes: notes.trim(), icon: TYPE_ICONS[type] });
+    navigation.goBack();
   };
 
   return (

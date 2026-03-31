@@ -10,9 +10,8 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
-import { AnimatedPressable } from '../../components/ui';
+import { AnimatedPressable, TopHeaderBackground } from '../../components/ui';
 
 const GROUPS = [
   {
@@ -98,15 +97,13 @@ export default function ServicesHomeScreen({ navigation }) {
         showsVerticalScrollIndicator={false}
       >
         {/* Premium gradient hero */}
-        <LinearGradient
+        <TopHeaderBackground
           colors={['#0F2233', COLORS.primary, '#1E4562']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
           style={styles.hero}
         >
           <Text style={styles.heroTitle}>Services</Text>
           <Text style={styles.heroSub}>Professional help for every need</Text>
-        </LinearGradient>
+        </TopHeaderBackground>
 
         {/* Emergency banner — overlaps hero */}
         <AnimatedPressable
@@ -150,7 +147,6 @@ const styles = StyleSheet.create({
 
   hero: {
     paddingHorizontal: 20,
-    paddingTop: 24,
     paddingBottom: 40,
   },
   heroTitle: { fontFamily: FONTS.familyBold, fontSize: 28, color: COLORS.white, letterSpacing: -0.3 },

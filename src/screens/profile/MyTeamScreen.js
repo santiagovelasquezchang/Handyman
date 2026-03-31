@@ -8,7 +8,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
-import { TopTabBar } from '../../components/ui';
+import { TopTabBar, TopHeaderBackground } from '../../components/ui';
 
 const TABS = [
   { key: 'trusted',  label: 'Trusted'  },
@@ -74,10 +74,10 @@ export default function MyTeamScreen() {
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
-      <View style={styles.hero}>
+      <TopHeaderBackground color={COLORS.primary} style={styles.hero}>
         <Text style={styles.heroTitle}>My Team</Text>
         <Text style={styles.heroSub}>Your trusted service providers</Text>
-      </View>
+      </TopHeaderBackground>
 
       <TopTabBar tabs={TABS} active={tab} onSelect={setTab} />
 
@@ -101,7 +101,7 @@ export default function MyTeamScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.background },
 
-  hero: { backgroundColor: COLORS.primary, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 20 },
+  hero: { paddingHorizontal: 20, paddingBottom: 20 },
   heroTitle: { fontFamily: FONTS.familyBold, fontSize: 22, color: COLORS.white },
   heroSub:   { fontFamily: FONTS.family, fontSize: 13, color: 'rgba(255,255,255,0.7)', marginTop: 3 },
 

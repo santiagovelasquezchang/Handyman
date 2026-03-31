@@ -230,7 +230,12 @@ export default function ReviewConfirmScreen({ navigation, route }) {
   const handleConfirm = () => setConfirmed(true);
 
   const handleGoHome = () => {
-    navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] });
+    // Reset the root ClientNavigator stack to ClientTabs (clears booking funnel history),
+    // then jump to the HomeTab so the user lands on the Home screen.
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'ClientTabs', params: { screen: 'HomeTab' } }],
+    });
   };
 
   return (

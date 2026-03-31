@@ -10,7 +10,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
-import { TopTabBar } from '../../components/ui';
+import { TopTabBar, TopHeaderBackground } from '../../components/ui';
 import { TASKER_TASKS, TASKER_REQUESTS } from '../../../mockData';
 
 const TABS = [
@@ -77,9 +77,9 @@ export default function ProviderJobsScreen({ navigation }) {
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
-      <View style={styles.header}>
+      <TopHeaderBackground color={COLORS.primary} style={styles.header}>
         <Text style={styles.headerTitle}>Jobs</Text>
-      </View>
+      </TopHeaderBackground>
 
       <TopTabBar tabs={TABS} active={tab} onSelect={setTab} />
 
@@ -108,7 +108,7 @@ export default function ProviderJobsScreen({ navigation }) {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.background },
 
-  header: { backgroundColor: COLORS.primary, paddingHorizontal: 20, paddingTop: 20, paddingBottom: 18 },
+  header: { paddingHorizontal: 20, paddingBottom: 18 },
   headerTitle: { fontFamily: FONTS.familyBold, fontSize: 22, color: COLORS.white },
 
   card: {
