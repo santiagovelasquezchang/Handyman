@@ -1,20 +1,12 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //  src/screens/HomeScreen.js  –  Client Home (Engine A + B hub)
 //
-//  Layout (top → bottom):
-//   ┌──────────────────────────────────────────┐ ← sticky nav header (navy)
-//   │  HANDYMAN     ·  notification bell       │   safe-area aware
-//   ├──────────────────────────────────────────┤
-//   │  [  search bar pill  ]                   │ ← always visible / sticky
-//   ├──────────────────────────────────────────┤
-//   │  scrollable body:                        │
-//   │    • Urgency banner                      │
-//   │    • Upcoming booking snapshot           │
-//   │    • Quick Book (ServiceCard carousel)   │
-//   │    • Space summary card                  │
-//   │    • Your Team (rebook strip)            │
-//   │    • Maintenance reminder                │
-//   └──────────────────────────────────────────┘
+//  Phase 2.5 Bug-fix pass:
+//    1. Header paddingBottom increased, search bar properly spaced
+//    2. Urgency card — minHeight 140, full-width, proper row flex
+//    3. Upcoming card — row flex on inner View, no dead white space
+//    4. Provider cards — wider (140), larger avatar (64), full-width rebook
+//    5. Global spacing — section gaps 32, SectionHeader margin 16
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React, { useRef, useEffect } from 'react';
@@ -35,7 +27,7 @@ import {
 } from '../../mockData';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../theme';
 import { useAuth } from '../context/AuthContext';
-import { SectionHeader, ServiceCard, PrimaryButton } from '../components/ui';
+import { SectionHeader, ServiceCard, PrimaryButton, AnimatedPressable } from '../components/ui';
 
 const { width: SW } = Dimensions.get('window');
 const CARD_SIZE     = 148;
@@ -86,61 +78,84 @@ function SearchBar({ onPress }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Urgency Banner
+//  Urgency Banner  (Bug 2 fix: minHeight 140, row layout on inner View)
 // ─────────────────────────────────────────────────────────────────────────────
 function UrgencyBanner({ onPress }) {
   return (
-    <TouchableOpacity style={s.urgencyCard} onPress={onPress} activeOpacity={0.88}>
+    <AnimatedPressable
+      style={s.urgencyOuter}
+      onPress={onPress}
+      haptic="medium"
+      scaleTo={0.97}
+      innerStyle={s.urgencyTouchable}
+    >
       <LinearGradient
         colors={[COLORS.primary, '#0F2233']}
-        style={StyleSheet.absoluteFill}
-        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-      />
-      {/* background decorative circle */}
-      <View style={s.urgencyCircle} />
-      <View style={s.urgencyLeft}>
-        <View style={s.urgencyIconWrap}>
-          <Ionicons name="flash" size={22} color={COLORS.accent} />
+        style={s.urgencyGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        {/* background decorative circle */}
+        <View style={s.urgencyCircle} />
+        <View style={s.urgencyTop}>
+          <View style={s.urgencyIconWrap}>
+            <Ionicons name="flash" size={22} color={COLORS.accent} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={s.urgencyTitle}>Need Help Right Now?</Text>
+            <Text style={s.urgencySub}>Provider dispatched within 60 minutes</Text>
+          </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <Text style={s.urgencyTitle}>Need Help Right Now?</Text>
-          <Text style={s.urgencySub}>Provider dispatched within 60 minutes</Text>
+        <View style={s.urgencyBtn}>
+          <Text style={s.urgencyBtnText}>Get Help Now</Text>
+          <Ionicons name="arrow-forward" size={14} color={COLORS.white} style={{ marginLeft: 6 }} />
         </View>
-      </View>
-      <View style={s.urgencyBtn}>
-        <Text style={s.urgencyBtnText}>Get Help</Text>
-        <Ionicons name="arrow-forward" size={13} color={COLORS.white} style={{ marginLeft: 4 }} />
-      </View>
-    </TouchableOpacity>
+      </LinearGradient>
+    </AnimatedPressable>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Upcoming Booking Snapshot
+//  Upcoming Booking Snapshot  (Bug 3 fix: flex row on inner View)
 // ─────────────────────────────────────────────────────────────────────────────
 function UpcomingBookingCard({ booking, onPress }) {
   return (
-    <TouchableOpacity style={s.upcomingCard} onPress={onPress} activeOpacity={0.85}>
-      <View style={s.upcomingLeft}>
-        <View style={s.upcomingDateBox}>
-          <Text style={s.upcomingDateMonth}>APR</Text>
-          <Text style={s.upcomingDateDay}>5</Text>
-        </View>
-        <View style={{ flex: 1 }}>
-          <Text style={s.upcomingService}>{booking.service}</Text>
-          <Text style={s.upcomingTime}>{booking.date} · {booking.time}</Text>
-          <View style={s.upcomingMeta}>
-            <Ionicons name="location-outline" size={11} color={COLORS.textSecondary} />
-            <Text style={s.upcomingMetaText}>{booking.spaceLabel}</Text>
+    <AnimatedPressable
+      onPress={onPress}
+      haptic="light"
+      scaleTo={0.97}
+    >
+      <View style={s.upcomingCard}>
+        {/* Left: date pill + service info */}
+        <View style={s.upcomingLeft}>
+          <View style={s.upcomingDateBox}>
+            <Text style={s.upcomingDateMonth}>APR</Text>
+            <Text style={s.upcomingDateDay}>5</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={s.upcomingService}>{booking.service}</Text>
+            <Text style={s.upcomingTime}>{booking.date} · {booking.time}</Text>
+            <View style={s.upcomingMeta}>
+              <Ionicons name="location-outline" size={11} color={COLORS.textSecondary} />
+              <Text style={s.upcomingMetaText}>{booking.spaceLabel}</Text>
+            </View>
           </View>
         </View>
+
+        {/* Right: avatar + name + status */}
+        <View style={s.upcomingRight}>
+          <Image source={{ uri: booking.providerAvatar }} style={s.upcomingAvatar} />
+          <Text style={s.upcomingProviderName} numberOfLines={1}>{booking.provider}</Text>
+          <View style={s.upcomingStatusRow}>
+            <View style={s.upcomingStatusDot} />
+            <Text style={s.upcomingStatusText}>Confirmed</Text>
+          </View>
+        </View>
+
+        {/* Chevron */}
+        <Ionicons name="chevron-forward" size={16} color={COLORS.inactive} />
       </View>
-      <View style={s.upcomingRight}>
-        <Image source={{ uri: booking.providerAvatar }} style={s.upcomingAvatar} />
-        <Text style={s.upcomingProviderName} numberOfLines={1}>{booking.provider}</Text>
-        <View style={s.upcomingStatusDot} />
-      </View>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 
@@ -149,71 +164,89 @@ function UpcomingBookingCard({ booking, onPress }) {
 // ─────────────────────────────────────────────────────────────────────────────
 function SpaceSummaryCard({ space, onPress }) {
   return (
-    <TouchableOpacity style={s.spaceCard} onPress={onPress} activeOpacity={0.85}>
-      <View style={s.spaceIconWrap}>
-        <Ionicons name="home-outline" size={22} color={COLORS.primary} />
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text style={s.spaceName}>{space.name}</Text>
-        <Text style={s.spaceAddr} numberOfLines={1}>{space.address}</Text>
-        <View style={s.spaceHealthRow}>
-          <View style={[s.healthDot, { backgroundColor: space.healthColor }]} />
-          <Text style={s.healthLabel}>{space.healthLabel}</Text>
+    <AnimatedPressable
+      onPress={onPress}
+      haptic="light"
+      scaleTo={0.97}
+    >
+      <View style={s.spaceCard}>
+        <View style={s.spaceIconWrap}>
+          <Ionicons name="home-outline" size={22} color={COLORS.primary} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={s.spaceName}>{space.name}</Text>
+          <Text style={s.spaceAddr} numberOfLines={1}>{space.address}</Text>
+          <View style={s.spaceHealthRow}>
+            <View style={[s.healthDot, { backgroundColor: space.healthColor }]} />
+            <Text style={s.healthLabel}>{space.healthLabel}</Text>
+          </View>
+        </View>
+        <View style={s.spaceRight}>
+          {space.activeRecurring > 0 && (
+            <View style={s.spaceChip}>
+              <Ionicons name="repeat-outline" size={11} color={COLORS.accent} />
+              <Text style={s.spaceChipText}>{space.activeRecurring} recurring</Text>
+            </View>
+          )}
+          <Ionicons name="chevron-forward" size={15} color={COLORS.inactive} style={{ marginTop: 4 }} />
         </View>
       </View>
-      <View style={s.spaceRight}>
-        {space.activeRecurring > 0 && (
-          <View style={s.spaceChip}>
-            <Ionicons name="repeat-outline" size={11} color={COLORS.accent} />
-            <Text style={s.spaceChipText}>{space.activeRecurring} recurring</Text>
-          </View>
-        )}
-        <Ionicons name="chevron-forward" size={15} color={COLORS.inactive} style={{ marginTop: 4 }} />
-      </View>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Provider Rebook Card  (single item in the "Your Team" horizontal list)
+//  Provider Rebook Card  (Bug 4 fix: width 140, avatar 64, full-width rebook)
 // ─────────────────────────────────────────────────────────────────────────────
 function ProviderRebookCard({ provider, onPress }) {
   return (
-    <TouchableOpacity style={s.providerCard} onPress={onPress} activeOpacity={0.85}>
-      <View style={s.providerAvatarWrap}>
-        <Image source={{ uri: provider.avatar }} style={s.providerAvatar} />
-        <View style={s.providerOnline} />
+    <AnimatedPressable
+      onPress={onPress}
+      haptic="light"
+      scaleTo={0.95}
+    >
+      <View style={s.providerCard}>
+        <View style={s.providerAvatarWrap}>
+          <Image source={{ uri: provider.avatar }} style={s.providerAvatar} />
+          <View style={s.providerOnline} />
+        </View>
+        <Text style={s.providerName} numberOfLines={1}>{provider.name.split(' ')[0]}</Text>
+        <Text style={s.providerSpecialty} numberOfLines={1}>{provider.specialty}</Text>
+        <View style={s.providerStarRow}>
+          <Ionicons name="star" size={11} color={COLORS.accent} />
+          <Text style={s.providerRating}>{provider.rating}</Text>
+        </View>
+        <TouchableOpacity style={s.rebookBtn} onPress={onPress} activeOpacity={0.8}>
+          <Text style={s.rebookBtnText}>Rebook</Text>
+        </TouchableOpacity>
       </View>
-      <Text style={s.providerName} numberOfLines={1}>{provider.name.split(' ')[0]}</Text>
-      <Text style={s.providerSpecialty} numberOfLines={1}>{provider.specialty}</Text>
-      <View style={s.providerStarRow}>
-        <Ionicons name="star" size={10} color={COLORS.accent} />
-        <Text style={s.providerRating}>{provider.rating}</Text>
-      </View>
-      <TouchableOpacity style={s.rebookBtn} onPress={onPress} activeOpacity={0.8}>
-        <Text style={s.rebookBtnText}>Rebook</Text>
-      </TouchableOpacity>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Maintenance Reminder  (subtle upsell to recurring / plan)
+//  Maintenance Reminder
 // ─────────────────────────────────────────────────────────────────────────────
 function MaintenanceCard({ onPress }) {
   return (
-    <TouchableOpacity style={s.maintCard} onPress={onPress} activeOpacity={0.88}>
-      <View style={s.maintLeft}>
-        <View style={s.maintIcon}>
-          <Ionicons name="shield-checkmark-outline" size={20} color={COLORS.accent} />
+    <AnimatedPressable
+      onPress={onPress}
+      haptic="light"
+      scaleTo={0.97}
+    >
+      <View style={s.maintCard}>
+        <View style={s.maintLeft}>
+          <View style={s.maintIcon}>
+            <Ionicons name="shield-checkmark-outline" size={20} color={COLORS.accent} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={s.maintTitle}>Stay ahead of maintenance</Text>
+            <Text style={s.maintSub}>Set up recurring services and save up to 20%</Text>
+          </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <Text style={s.maintTitle}>Stay ahead of maintenance</Text>
-          <Text style={s.maintSub}>Set up recurring services and save up to 20%</Text>
-        </View>
+        <Ionicons name="arrow-forward-circle" size={26} color={COLORS.accent} />
       </View>
-      <Ionicons name="arrow-forward-circle" size={26} color={COLORS.accent} />
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 
@@ -228,8 +261,13 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={s.root}>
-      {/* ── Sticky navy header ──────────────────────────────────────────────── */}
-      <View style={[s.header, { paddingTop: insets.top + 12 }]}>
+      {/* ── Premium gradient header (Bug 1 fix: paddingBottom 44) ───────── */}
+      <LinearGradient
+        colors={['#0F2233', COLORS.primary, '#1E4562']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[s.header, { paddingTop: insets.top + 16 }]}
+      >
         <View style={s.headerRow}>
           <Text style={s.brandName}>HANDYMAN</Text>
           <View style={s.headerRight}>
@@ -239,35 +277,33 @@ export default function HomeScreen({ navigation }) {
               activeOpacity={0.8}
             >
               <Ionicons name="notifications-outline" size={20} color={COLORS.white} />
-              {/* unread dot */}
               <View style={s.notifDot} />
             </TouchableOpacity>
           </View>
         </View>
 
         <Text style={s.greeting}>
-          Hi, <Text style={s.greetingName}>{firstName}</Text> 👋
+          Hi, <Text style={s.greetingName}>{firstName}</Text>!
         </Text>
         <Text style={s.greetingSub}>What can we help you with today?</Text>
 
-        {/* Search bar lives inside header so it scrolls away with the greeting */}
+        {/* Search bar — comfortably inside header with padding below */}
         <View style={s.searchWrap}>
           <SearchBar onPress={() => navigate('Search')} />
         </View>
-      </View>
+      </LinearGradient>
 
       {/* ── Scrollable body ─────────────────────────────────────────────────── */}
       <ScrollView
         style={s.scroll}
         contentContainerStyle={[s.scrollContent, { paddingBottom: insets.bottom + 40 }]}
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[]}   // no sticky items inside scroll body
       >
 
-        {/* 1 ─ Urgency module */}
+        {/* 1 - Urgency module */}
         <UrgencyBanner onPress={() => navigate('EmergencyRequest')} />
 
-        {/* 2 ─ Upcoming booking snapshot */}
+        {/* 2 - Upcoming booking snapshot */}
         {HOME_UPCOMING_BOOKING && (
           <View style={s.section}>
             <SectionHeader
@@ -281,7 +317,7 @@ export default function HomeScreen({ navigation }) {
           </View>
         )}
 
-        {/* 3 ─ Quick Book carousel */}
+        {/* 3 - Quick Book carousel */}
         <View style={s.section}>
           <SectionHeader
             title="Quick Book"
@@ -305,7 +341,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        {/* 4 ─ Space summary */}
+        {/* 4 - Space summary */}
         <View style={s.section}>
           <SectionHeader
             title="My Spaces"
@@ -315,7 +351,6 @@ export default function HomeScreen({ navigation }) {
             space={HOME_PRIMARY_SPACE}
             onPress={() => navigate('SpaceDetails', { space: HOME_PRIMARY_SPACE })}
           />
-          {/* Add space CTA */}
           <TouchableOpacity
             style={s.addSpaceRow}
             onPress={() => navigate('AddSpace')}
@@ -326,7 +361,7 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* 5 ─ Your Team rebook strip */}
+        {/* 5 - Your Team rebook strip */}
         {HOME_TRUSTED_PROVIDERS.length > 0 && (
           <View style={s.section}>
             <SectionHeader
@@ -338,7 +373,7 @@ export default function HomeScreen({ navigation }) {
               keyExtractor={(p) => p.id}
               horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ gap: 12 }}
+              contentContainerStyle={{ gap: 14 }}
               renderItem={({ item }) => (
                 <ProviderRebookCard
                   provider={item}
@@ -349,7 +384,7 @@ export default function HomeScreen({ navigation }) {
           </View>
         )}
 
-        {/* 6 ─ Maintenance / plans teaser */}
+        {/* 6 - Maintenance / plans teaser */}
         <View style={s.section}>
           <MaintenanceCard onPress={() => navigate('PlansTab')} />
         </View>
@@ -365,24 +400,22 @@ export default function HomeScreen({ navigation }) {
 const s = StyleSheet.create({
   root:   { flex: 1, backgroundColor: '#F8F9FA' },
 
-  // ── Sticky header ────────────────────────────────────────────────────────
+  // ── Header (Bug 1 fix: paddingBottom 44 for search bar breathing room) ──
   header: {
-    backgroundColor: COLORS.primary,
     paddingHorizontal: 20,
-    paddingBottom: 20,
-    // Android elevation + iOS shadow both contribute to the "floating" feel
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
-    elevation: 6,
+    paddingBottom: 44,
+    shadowColor: '#1A374D',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    elevation: 8,
     zIndex: 10,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 14,
+    marginBottom: 16,
   },
   brandName: {
     fontFamily: FONTS.familyBold,
@@ -392,8 +425,8 @@ const s = StyleSheet.create({
   },
   headerRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   notifBtn: {
-    width: 36, height: 36, borderRadius: 18,
-    backgroundColor: 'rgba(255,255,255,0.14)',
+    width: 38, height: 38, borderRadius: 19,
+    backgroundColor: 'rgba(255,255,255,0.12)',
     alignItems: 'center', justifyContent: 'center',
   },
   notifDot: {
@@ -402,12 +435,12 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.accent,
     borderWidth: 1.5, borderColor: COLORS.primary,
   },
-  greeting:     { fontFamily: FONTS.familyBold, fontSize: 22, color: COLORS.white, letterSpacing: -0.3 },
+  greeting:     { fontFamily: FONTS.familyBold, fontSize: 24, color: COLORS.white, letterSpacing: -0.3 },
   greetingName: { color: COLORS.accent },
-  greetingSub:  { fontFamily: FONTS.family, fontSize: 13, color: 'rgba(255,255,255,0.65)', marginTop: 2, marginBottom: 16 },
+  greetingSub:  { fontFamily: FONTS.family, fontSize: 14, color: 'rgba(255,255,255,0.60)', marginTop: 3, marginBottom: 20 },
 
   // ── Search bar ───────────────────────────────────────────────────────────
-  searchWrap: { /* no extra margin — paddingBottom on header handles it */ },
+  searchWrap: {},
   searchOuter: {
     height: SEARCH_H,
     borderRadius: SEARCH_H / 2,
@@ -437,76 +470,92 @@ const s = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
 
-  // ── Scroll body ──────────────────────────────────────────────────────────
+  // ── Scroll body (Bug 5 fix: generous section gaps) ───────────────────────
   scroll:        { flex: 1 },
-  scrollContent: { paddingTop: 20 },
-  section:       { paddingHorizontal: 20, marginBottom: 28 },
+  scrollContent: { paddingTop: 28 },
+  section:       { paddingHorizontal: 20, marginBottom: 32 },
 
-  // ── Urgency card ─────────────────────────────────────────────────────────
-  urgencyCard: {
+  // ── Urgency card — LinearGradient is the content wrapper ───────────────
+  urgencyOuter: {
     marginHorizontal: 20,
+    marginBottom: 32,
+    borderRadius: RADIUS.lg,
+    ...SHADOW.cardLifted,
+  },
+  urgencyTouchable: {
     borderRadius: RADIUS.lg,
     overflow: 'hidden',
-    marginBottom: 28,
-    height: 90,
-    flexDirection: 'row',
-    alignItems: 'center',
+  },
+  urgencyGradient: {
+    minHeight: 140,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
     justifyContent: 'space-between',
-    paddingHorizontal: 18,
-    ...SHADOW.card,
   },
   urgencyCircle: {
     position: 'absolute', right: -24, top: -24,
-    width: 110, height: 110, borderRadius: 55,
+    width: 130, height: 130, borderRadius: 65,
     backgroundColor: 'rgba(255,127,63,0.12)',
   },
-  urgencyLeft:    { flexDirection: 'row', alignItems: 'center', gap: 14, flex: 1 },
-  urgencyIconWrap:{
-    width: 44, height: 44, borderRadius: 22,
+  urgencyTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    marginBottom: 16,
+  },
+  urgencyIconWrap: {
+    width: 48, height: 48, borderRadius: 24,
     backgroundColor: 'rgba(255,127,63,0.18)',
     alignItems: 'center', justifyContent: 'center',
   },
-  urgencyTitle: { fontFamily: FONTS.familyBold, fontSize: 15, color: COLORS.white },
-  urgencySub:   { fontFamily: FONTS.family, fontSize: 11, color: 'rgba(255,255,255,0.65)', marginTop: 2 },
+  urgencyTitle: { fontFamily: FONTS.familyBold, fontSize: 17, color: COLORS.white },
+  urgencySub:   { fontFamily: FONTS.family, fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 3 },
   urgencyBtn: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'flex-start',
     backgroundColor: COLORS.accent,
     borderRadius: RADIUS.pill,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
-  urgencyBtnText: { fontFamily: FONTS.familyBold, fontSize: 12, color: COLORS.white },
+  urgencyBtnText: { fontFamily: FONTS.familyBold, fontSize: 13, color: COLORS.white },
 
-  // ── Upcoming booking ─────────────────────────────────────────────────────
+  // ── Upcoming booking (Bug 3 fix: row flex on inner View, no dead space) ──
   upcomingCard: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: 12,
     ...SHADOW.card,
   },
-  upcomingLeft:      { flexDirection: 'row', alignItems: 'flex-start', gap: 14, flex: 1 },
-  upcomingDateBox:   {
-    width: 48, minHeight: 52,
+  upcomingLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    flex: 1,
+  },
+  upcomingDateBox: {
+    width: 48, height: 56,
     backgroundColor: COLORS.primaryLight,
     borderRadius: RADIUS.md,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 6,
   },
-  upcomingDateMonth: { fontFamily: FONTS.familySemibold, fontSize: 9, color: COLORS.primary, letterSpacing: 0.5 },
+  upcomingDateMonth: { fontFamily: FONTS.familySemibold, fontSize: 10, color: COLORS.primary, letterSpacing: 0.5 },
   upcomingDateDay:   { fontFamily: FONTS.familyBold, fontSize: 22, color: COLORS.primary, lineHeight: 26 },
   upcomingService:   { fontFamily: FONTS.familyBold, fontSize: 15, color: COLORS.textPrimary },
   upcomingTime:      { fontFamily: FONTS.family, fontSize: 12, color: COLORS.textSecondary, marginTop: 2 },
-  upcomingMeta:      { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 5 },
+  upcomingMeta:      { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 },
   upcomingMetaText:  { fontFamily: FONTS.family, fontSize: 11, color: COLORS.textSecondary },
   upcomingRight:     { alignItems: 'center', gap: 4 },
   upcomingAvatar:    { width: 44, height: 44, borderRadius: 22, borderWidth: 2, borderColor: COLORS.accent },
   upcomingProviderName: { fontFamily: FONTS.familySemibold, fontSize: 11, color: COLORS.textPrimary, maxWidth: 64, textAlign: 'center' },
-  upcomingStatusDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: COLORS.success },
+  upcomingStatusRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  upcomingStatusDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: COLORS.success },
+  upcomingStatusText:{ fontFamily: FONTS.family, fontSize: 10, color: COLORS.success },
 
   // ── Space card ────────────────────────────────────────────────────────────
   spaceCard: {
@@ -537,39 +586,41 @@ const s = StyleSheet.create({
   spaceChipText: { fontFamily: FONTS.familySemibold, fontSize: 10, color: COLORS.accent },
   addSpaceRow:   {
     flexDirection: 'row', alignItems: 'center', gap: 6,
-    marginTop: 12, paddingVertical: 2,
+    marginTop: 14, paddingVertical: 2,
   },
   addSpaceText:  { fontFamily: FONTS.familySemibold, fontSize: 13, color: COLORS.accent },
 
-  // ── Provider rebook card ──────────────────────────────────────────────────
+  // ── Provider rebook card (Bug 4 fix: width 140, avatar 64, full rebook) ──
   providerCard: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
-    padding: 14,
-    width: 110,
+    padding: 16,
+    width: 140,
     alignItems: 'center',
-    gap: 4,
+    gap: 6,
     ...SHADOW.card,
   },
-  providerAvatarWrap: { position: 'relative' },
-  providerAvatar:     { width: 56, height: 56, borderRadius: 28, borderWidth: 2, borderColor: COLORS.border },
+  providerAvatarWrap: { position: 'relative', marginBottom: 2 },
+  providerAvatar:     { width: 64, height: 64, borderRadius: 32, borderWidth: 2, borderColor: COLORS.border },
   providerOnline:     {
-    position: 'absolute', bottom: 1, right: 1,
-    width: 12, height: 12, borderRadius: 6,
+    position: 'absolute', bottom: 2, right: 2,
+    width: 14, height: 14, borderRadius: 7,
     backgroundColor: COLORS.success,
-    borderWidth: 2, borderColor: COLORS.white,
+    borderWidth: 2.5, borderColor: COLORS.white,
   },
-  providerName:     { fontFamily: FONTS.familySemibold, fontSize: 12, color: COLORS.textPrimary, textAlign: 'center' },
-  providerSpecialty:{ fontFamily: FONTS.family, fontSize: 10, color: COLORS.textSecondary, textAlign: 'center' },
+  providerName:     { fontFamily: FONTS.familySemibold, fontSize: 13, color: COLORS.textPrimary, textAlign: 'center' },
+  providerSpecialty:{ fontFamily: FONTS.family, fontSize: 11, color: COLORS.textSecondary, textAlign: 'center' },
   providerStarRow:  { flexDirection: 'row', alignItems: 'center', gap: 3 },
   providerRating:   { fontFamily: FONTS.familySemibold, fontSize: 11, color: COLORS.textPrimary },
   rebookBtn:   {
-    marginTop: 2,
-    backgroundColor: COLORS.accentLight,
+    marginTop: 4,
+    width: '100%',
+    backgroundColor: 'rgba(255,127,63,0.10)',
     borderRadius: RADIUS.pill,
-    paddingHorizontal: 12, paddingVertical: 5,
+    paddingVertical: 8,
+    alignItems: 'center',
   },
-  rebookBtnText: { fontFamily: FONTS.familyBold, fontSize: 11, color: COLORS.accent },
+  rebookBtnText: { fontFamily: FONTS.familyBold, fontSize: 12, color: COLORS.accent },
 
   // ── Maintenance card ─────────────────────────────────────────────────────
   maintCard: {

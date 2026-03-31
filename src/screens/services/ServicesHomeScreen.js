@@ -1,6 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //  src/screens/services/ServicesHomeScreen.js
 //  Engine A hub — structured service catalog with grouped categories.
+//  Phase 2.5: AnimatedPressable cards, premium shadows, breathing layout.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
@@ -9,7 +10,9 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../../theme';
+import { AnimatedPressable } from '../../components/ui';
 
 const GROUPS = [
   {
@@ -64,18 +67,24 @@ const GROUPS = [
 
 function GroupCard({ group, onPress }) {
   return (
-    <TouchableOpacity style={styles.groupCard} onPress={onPress} activeOpacity={0.8}>
-      <View style={[styles.groupIcon, { backgroundColor: group.bg }]}>
-        <Ionicons name={group.icon} size={22} color={group.color} />
+    <AnimatedPressable
+      onPress={onPress}
+      haptic="light"
+      scaleTo={0.97}
+    >
+      <View style={styles.groupCard}>
+        <View style={[styles.groupIcon, { backgroundColor: group.bg }]}>
+          <Ionicons name={group.icon} size={22} color={group.color} />
+        </View>
+        <View style={styles.groupContent}>
+          <Text style={styles.groupTitle}>{group.title}</Text>
+          <Text style={styles.groupSubs} numberOfLines={1}>
+            {group.services.join(' · ')}
+          </Text>
+        </View>
+        <Ionicons name="chevron-forward" size={16} color={COLORS.inactive} />
       </View>
-      <View style={styles.groupContent}>
-        <Text style={styles.groupTitle}>{group.title}</Text>
-        <Text style={styles.groupSubs} numberOfLines={1}>
-          {group.services.join(' · ')}
-        </Text>
-      </View>
-      <Ionicons name="chevron-forward" size={16} color={COLORS.inactive} />
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 
@@ -88,29 +97,37 @@ export default function ServicesHomeScreen({ navigation }) {
         contentContainerStyle={{ paddingBottom: insets.bottom + 32 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Navy hero */}
-        <View style={styles.hero}>
+        {/* Premium gradient hero */}
+        <LinearGradient
+          colors={['#0F2233', COLORS.primary, '#1E4562']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.hero}
+        >
           <Text style={styles.heroTitle}>Services</Text>
           <Text style={styles.heroSub}>Professional help for every need</Text>
-        </View>
+        </LinearGradient>
 
         {/* Emergency banner — overlaps hero */}
-        <TouchableOpacity
-          style={styles.urgentBanner}
+        <AnimatedPressable
           onPress={() => navigation.navigate('EmergencyRequest')}
-          activeOpacity={0.88}
+          haptic="medium"
+          scaleTo={0.97}
+          style={styles.urgentBannerWrap}
         >
-          <View style={styles.urgentLeft}>
-            <View style={styles.urgentIconWrap}>
-              <Ionicons name="flash" size={18} color={COLORS.accent} />
+          <View style={styles.urgentBanner}>
+            <View style={styles.urgentLeft}>
+              <View style={styles.urgentIconWrap}>
+                <Ionicons name="flash" size={18} color={COLORS.accent} />
+              </View>
+              <View>
+                <Text style={styles.urgentTitle}>Need Urgent Help?</Text>
+                <Text style={styles.urgentSub}>Provider available in under 60 min</Text>
+              </View>
             </View>
-            <View>
-              <Text style={styles.urgentTitle}>Need Urgent Help?</Text>
-              <Text style={styles.urgentSub}>Provider available in under 60 min</Text>
-            </View>
+            <Ionicons name="arrow-forward-circle" size={24} color={COLORS.accent} />
           </View>
-          <Ionicons name="arrow-forward-circle" size={24} color={COLORS.accent} />
-        </TouchableOpacity>
+        </AnimatedPressable>
 
         {/* Category groups */}
         <View style={styles.list}>
@@ -132,49 +149,50 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.background },
 
   hero: {
-    backgroundColor: COLORS.primary,
     paddingHorizontal: 20,
-    paddingTop: 22,
-    paddingBottom: 36,
+    paddingTop: 24,
+    paddingBottom: 40,
   },
-  heroTitle: { fontFamily: FONTS.familyBold, fontSize: 26, color: COLORS.white },
-  heroSub:   { fontFamily: FONTS.family, fontSize: 14, color: 'rgba(255,255,255,0.72)', marginTop: 4 },
+  heroTitle: { fontFamily: FONTS.familyBold, fontSize: 28, color: COLORS.white, letterSpacing: -0.3 },
+  heroSub:   { fontFamily: FONTS.family, fontSize: 14, color: 'rgba(255,255,255,0.65)', marginTop: 4 },
 
-  urgentBanner: {
+  urgentBannerWrap: {
     marginHorizontal: 16,
     marginTop: -20,
+    marginBottom: 8,
+  },
+  urgentBanner: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
-    padding: 14,
+    padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 6,
     ...SHADOW.card,
   },
   urgentLeft:    { flexDirection: 'row', alignItems: 'center', gap: 12 },
   urgentIconWrap:{
-    width: 40, height: 40, borderRadius: 20,
+    width: 42, height: 42, borderRadius: 21,
     backgroundColor: COLORS.accentLight,
     alignItems: 'center', justifyContent: 'center',
   },
   urgentTitle: { fontFamily: FONTS.familySemibold, fontSize: 14, color: COLORS.textPrimary },
   urgentSub:   { fontFamily: FONTS.family, fontSize: 12, color: COLORS.textSecondary, marginTop: 2 },
 
-  list:         { padding: 16, gap: 10 },
-  sectionLabel: { fontFamily: FONTS.familySemibold, fontSize: 16, color: COLORS.textPrimary, marginBottom: 4 },
+  list:         { padding: 16, paddingTop: 20, gap: 12 },
+  sectionLabel: { fontFamily: FONTS.familyBold, fontSize: 18, color: COLORS.textPrimary, marginBottom: 4, letterSpacing: -0.2 },
 
   groupCard: {
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
-    padding: 14,
+    padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 14,
     ...SHADOW.card,
   },
-  groupIcon:    { width: 44, height: 44, borderRadius: RADIUS.md, alignItems: 'center', justifyContent: 'center' },
+  groupIcon:    { width: 46, height: 46, borderRadius: RADIUS.md, alignItems: 'center', justifyContent: 'center' },
   groupContent: { flex: 1 },
-  groupTitle:   { fontFamily: FONTS.familySemibold, fontSize: 14, color: COLORS.textPrimary },
-  groupSubs:    { fontFamily: FONTS.family, fontSize: 12, color: COLORS.textSecondary, marginTop: 2 },
+  groupTitle:   { fontFamily: FONTS.familySemibold, fontSize: 15, color: COLORS.textPrimary },
+  groupSubs:    { fontFamily: FONTS.family, fontSize: 12, color: COLORS.textSecondary, marginTop: 3 },
 });

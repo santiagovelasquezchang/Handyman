@@ -62,17 +62,24 @@ export const RADIUS = {
 
 export const SHADOW = {
   card: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.07,
-    shadowRadius: 6,
+    shadowColor: '#1A374D',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
     elevation: 3,
   },
+  cardLifted: {
+    shadowColor: '#1A374D',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.12,
+    shadowRadius: 20,
+    elevation: 6,
+  },
   bar: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -1 },
+    shadowColor: '#1A374D',
+    shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.06,
-    shadowRadius: 4,
+    shadowRadius: 8,
     elevation: 4,
   },
 };

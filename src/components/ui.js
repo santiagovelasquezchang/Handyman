@@ -1,19 +1,75 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //  src/components/ui.js  –  Shared design-system primitives
-//  Phase 2 rewrite: every component is production-polished.
+//  Phase 2.5: Premium UX — haptics, animated pressables, tinted shadows,
+//             beautiful empty states, and refined typography.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 import {
-  View, Text, Image, TouchableOpacity,
-  ScrollView, StyleSheet, Dimensions,
+  View, Text, Image, TouchableOpacity, Animated,
+  ScrollView, StyleSheet, Dimensions, Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { COLORS, FONTS, RADIUS, SHADOW } from '../theme';
 
 const { width: SW } = Dimensions.get('window');
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  AnimatedPressable
+//  A drop-in replacement for TouchableOpacity that adds:
+//    • Smooth spring scale-down on press (0.97)
+//    • Haptic feedback on release
+//  Props: haptic ('light' | 'medium' | 'heavy' | 'none'), all TouchableOpacity props
+// ─────────────────────────────────────────────────────────────────────────────
+export function AnimatedPressable({
+  children, style, innerStyle, onPress, haptic = 'light',
+  scaleTo = 0.97, activeOpacity = 1, ...rest
+}) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const onPressIn = useCallback(() => {
+    Animated.spring(scale, {
+      toValue: scaleTo,
+      useNativeDriver: true,
+      speed: 50,
+      bounciness: 4,
+    }).start();
+  }, [scaleTo]);
+
+  const onPressOut = useCallback(() => {
+    Animated.spring(scale, {
+      toValue: 1,
+      useNativeDriver: true,
+      speed: 28,
+      bounciness: 8,
+    }).start();
+    if (haptic !== 'none') {
+      const feedbackStyle =
+        haptic === 'heavy'  ? Haptics.ImpactFeedbackStyle.Heavy :
+        haptic === 'medium' ? Haptics.ImpactFeedbackStyle.Medium :
+                              Haptics.ImpactFeedbackStyle.Light;
+      Haptics.impactAsync(feedbackStyle).catch(() => {});
+    }
+  }, [haptic]);
+
+  return (
+    <Animated.View style={[{ transform: [{ scale }] }, style]}>
+      <TouchableOpacity
+        onPress={onPress}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+        activeOpacity={activeOpacity}
+        style={innerStyle}
+        {...rest}
+      >
+        {children}
+      </TouchableOpacity>
+    </Animated.View>
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  ScreenContainer
@@ -59,102 +115,115 @@ export function SectionHeader({ title, onSeeAll, style }) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  ServiceCard
-//  Square card: image background, dark gradient bottom 40%, white text.
-//  size prop controls width/height (default 148).
+//  Square card with animated press + haptic feedback.
+//  Image background, dark gradient bottom 40%, white text.
 // ─────────────────────────────────────────────────────────────────────────────
 export function ServiceCard({ service, size = 148, onPress }) {
   return (
-    <TouchableOpacity
-      style={[sc.root, { width: size, height: size }]}
+    <AnimatedPressable
+      style={[{ width: size, height: size }, sc.shadow]}
       onPress={onPress}
-      activeOpacity={0.88}
+      haptic="light"
+      scaleTo={0.95}
+      innerStyle={{ flex: 1 }}
     >
-      {/* background image */}
-      <Image
-        source={{ uri: service.image }}
-        style={StyleSheet.absoluteFill}
-        resizeMode="cover"
-      />
-      {/* gradient overlay */}
-      <LinearGradient
-        colors={['transparent', 'rgba(10,22,34,0.82)']}
-        style={[StyleSheet.absoluteFill, { borderRadius: RADIUS.lg }]}
-        start={{ x: 0, y: 0.45 }}
-        end={{ x: 0, y: 1 }}
-      />
-      {/* icon badge */}
-      <View style={sc.iconBadge}>
-        <Ionicons name={service.icon} size={14} color={COLORS.white} />
+      <View style={sc.root}>
+        {/* background image with fallback color */}
+        <Image
+          source={{ uri: service.image }}
+          style={sc.image}
+          resizeMode="cover"
+        />
+        {/* gradient overlay */}
+        <LinearGradient
+          colors={['transparent', 'rgba(10,22,34,0.82)']}
+          style={sc.gradient}
+          start={{ x: 0, y: 0.45 }}
+          end={{ x: 0, y: 1 }}
+        />
+        {/* icon badge */}
+        <View style={sc.iconBadge}>
+          <Ionicons name={service.icon} size={14} color={COLORS.white} />
+        </View>
+        {/* label */}
+        <View style={sc.labelWrap}>
+          <Text style={sc.label} numberOfLines={2}>{service.name}</Text>
+          {service.baseRate ? (
+            <Text style={sc.rate}>from ${service.baseRate}/hr</Text>
+          ) : null}
+        </View>
       </View>
-      {/* label */}
-      <View style={sc.labelWrap}>
-        <Text style={sc.label} numberOfLines={2}>{service.name}</Text>
-        {service.baseRate ? (
-          <Text style={sc.rate}>from ${service.baseRate}/hr</Text>
-        ) : null}
-      </View>
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  PrimaryButton
-//  Large pill-shaped orange button.  secondary=true → navy outline variant.
+//  Large pill-shaped orange button with medium haptic feedback.
+//  secondary=true -> navy outline variant.
 // ─────────────────────────────────────────────────────────────────────────────
 export function PrimaryButton({ label, onPress, style, secondary = false, icon, small = false }) {
   return (
-    <TouchableOpacity
-      style={[
-        pb.btn,
-        secondary && pb.secondary,
-        small && pb.small,
-        style,
-      ]}
+    <AnimatedPressable
+      style={style}
       onPress={onPress}
-      activeOpacity={0.86}
+      haptic={secondary ? 'light' : 'medium'}
+      scaleTo={0.96}
     >
-      {icon
-        ? <Ionicons
-            name={icon}
-            size={small ? 15 : 18}
-            color={secondary ? COLORS.primary : COLORS.white}
-            style={{ marginRight: 7 }}
-          />
-        : null}
-      <Text style={[pb.text, secondary && pb.textSecondary, small && pb.textSmall]}>
-        {label}
-      </Text>
-    </TouchableOpacity>
+      <View
+        style={[
+          pb.btn,
+          secondary && pb.secondary,
+          small && pb.small,
+        ]}
+      >
+        {icon
+          ? <Ionicons
+              name={icon}
+              size={small ? 15 : 18}
+              color={secondary ? COLORS.primary : COLORS.white}
+              style={{ marginRight: 7 }}
+            />
+          : null}
+        <Text style={[pb.text, secondary && pb.textSecondary, small && pb.textSmall]}>
+          {label}
+        </Text>
+      </View>
+    </AnimatedPressable>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  ServiceListRow
-//  Clean white card row: coloured icon square · name · right chevron.
-//  Used in grouped catalog lists.
+//  Clean white card row: coloured icon square, name, right chevron.
+//  Now with AnimatedPressable for subtle press feedback.
 // ─────────────────────────────────────────────────────────────────────────────
 export function ServiceListRow({ service, onPress, isFirst, isLast }) {
   return (
-    <TouchableOpacity
-      style={[
-        slr.row,
-        isFirst && slr.rowFirst,
-        isLast  && slr.rowLast,
-      ]}
+    <AnimatedPressable
       onPress={onPress}
-      activeOpacity={0.75}
+      haptic="light"
+      scaleTo={0.98}
     >
-      <View style={[slr.iconWrap, { backgroundColor: service.groupColor + '18' }]}>
-        <Ionicons name={service.icon} size={18} color={service.groupColor ?? COLORS.primary} />
+      <View
+        style={[
+          slr.row,
+          isFirst && slr.rowFirst,
+          isLast  && slr.rowLast,
+        ]}
+      >
+        <View style={[slr.iconWrap, { backgroundColor: service.groupColor + '18' }]}>
+          <Ionicons name={service.icon} size={18} color={service.groupColor ?? COLORS.primary} />
+        </View>
+        <View style={slr.content}>
+          <Text style={slr.name}>{service.name}</Text>
+          {service.baseRate
+            ? <Text style={slr.rate}>from ${service.baseRate}/hr</Text>
+            : null}
+        </View>
+        <Ionicons name="chevron-forward" size={16} color={COLORS.inactive} />
       </View>
-      <View style={slr.content}>
-        <Text style={slr.name}>{service.name}</Text>
-        {service.baseRate
-          ? <Text style={slr.rate}>from ${service.baseRate}/hr</Text>
-          : null}
-      </View>
-      <Ionicons name="chevron-forward" size={16} color={COLORS.inactive} />
-    </TouchableOpacity>
+    </AnimatedPressable>
   );
 }
 
@@ -204,20 +273,30 @@ export function TopTabBar({ tabs, active, onSelect }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  EmptyState
+//  EmptyState  –  Premium centered empty state with translucent icon circle
+//  Props: icon, title (Bold 20px Navy), description (Regular 15px), buttonText
 // ─────────────────────────────────────────────────────────────────────────────
-export function EmptyState({ icon, title, subtitle, action, onAction }) {
+export function EmptyState({ icon, title, subtitle, description, action, buttonText, onAction }) {
+  const desc = description || subtitle;
+  const btnLabel = buttonText || action;
   return (
     <View style={es.root}>
       <View style={es.iconWrap}>
-        <Ionicons name={icon ?? 'cube-outline'} size={30} color={COLORS.primary} />
+        <Ionicons name={icon ?? 'cube-outline'} size={34} color={COLORS.accent} />
       </View>
       <Text style={es.title}>{title}</Text>
-      {subtitle ? <Text style={es.subtitle}>{subtitle}</Text> : null}
-      {action ? (
-        <TouchableOpacity style={es.btn} onPress={onAction} activeOpacity={0.82}>
-          <Text style={es.btnText}>{action}</Text>
-        </TouchableOpacity>
+      {desc ? <Text style={es.subtitle}>{desc}</Text> : null}
+      {btnLabel ? (
+        <AnimatedPressable
+          onPress={onAction}
+          haptic="medium"
+          scaleTo={0.96}
+          style={{ marginTop: 16 }}
+        >
+          <View style={es.btn}>
+            <Text style={es.btnText}>{btnLabel}</Text>
+          </View>
+        </AnimatedPressable>
       ) : null}
     </View>
   );
@@ -230,24 +309,23 @@ export function PlaceholderListItem({
   icon, iconColor, iconBg, title, subtitle,
   rightText, onPress, isLast,
 }) {
-  const Wrap = onPress ? TouchableOpacity : View;
+  const Wrap = onPress ? AnimatedPressable : View;
+  const wrapProps = onPress ? { onPress, haptic: 'light', scaleTo: 0.98 } : {};
   return (
-    <Wrap
-      style={[li.row, isLast && { borderBottomWidth: 0 }]}
-      onPress={onPress}
-      activeOpacity={0.72}
-    >
-      {icon ? (
-        <View style={[li.iconWrap, { backgroundColor: iconBg ?? COLORS.accentLight }]}>
-          <Ionicons name={icon} size={17} color={iconColor ?? COLORS.accent} />
+    <Wrap {...wrapProps}>
+      <View style={[li.row, isLast && { borderBottomWidth: 0 }]}>
+        {icon ? (
+          <View style={[li.iconWrap, { backgroundColor: iconBg ?? COLORS.accentLight }]}>
+            <Ionicons name={icon} size={17} color={iconColor ?? COLORS.accent} />
+          </View>
+        ) : null}
+        <View style={li.content}>
+          <Text style={li.title}>{title}</Text>
+          {subtitle ? <Text style={li.subtitle}>{subtitle}</Text> : null}
         </View>
-      ) : null}
-      <View style={li.content}>
-        <Text style={li.title}>{title}</Text>
-        {subtitle ? <Text style={li.subtitle}>{subtitle}</Text> : null}
+        {rightText ? <Text style={li.right}>{rightText}</Text> : null}
+        {onPress   ? <Ionicons name="chevron-forward" size={15} color={COLORS.inactive} /> : null}
       </View>
-      {rightText ? <Text style={li.right}>{rightText}</Text> : null}
-      {onPress   ? <Ionicons name="chevron-forward" size={15} color={COLORS.inactive} /> : null}
     </Wrap>
   );
 }
@@ -293,25 +371,39 @@ export function StatPill({ stats }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const sh = StyleSheet.create({
-  row:   { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
+  row:   { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   title: { fontFamily: FONTS.familyBold, fontSize: 20, color: COLORS.textPrimary, letterSpacing: -0.3 },
   link:  { fontFamily: FONTS.familySemibold, fontSize: 13, color: COLORS.accent },
 });
 
 const sc = StyleSheet.create({
+  shadow: {
+    ...SHADOW.card,
+  },
   root: {
+    flex: 1,
     borderRadius: RADIUS.lg,
     overflow: 'hidden',
-    backgroundColor: COLORS.surface,
-    ...SHADOW.card,
+    backgroundColor: '#D0D0D0',
+  },
+  image: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    width: '100%',
+    height: '100%',
+  },
+  gradient: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
   },
   iconBadge: {
     position: 'absolute', top: 10, left: 10,
     width: 26, height: 26, borderRadius: 8,
     backgroundColor: 'rgba(255,255,255,0.22)',
     alignItems: 'center', justifyContent: 'center',
+    zIndex: 2,
   },
-  labelWrap: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: 10 },
+  labelWrap: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: 10, zIndex: 2 },
   label: { fontFamily: FONTS.familyBold, fontSize: 13, color: COLORS.white, lineHeight: 17 },
   rate:  { fontFamily: FONTS.family, fontSize: 11, color: 'rgba(255,255,255,0.78)', marginTop: 2 },
 });
@@ -325,8 +417,9 @@ const pb = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
+    ...SHADOW.card,
   },
-  secondary:     { backgroundColor: 'transparent', borderWidth: 1.5, borderColor: COLORS.primary },
+  secondary:     { backgroundColor: 'transparent', borderWidth: 1.5, borderColor: COLORS.primary, shadowOpacity: 0 },
   small:         { height: 38, paddingHorizontal: 16 },
   text:          { fontFamily: FONTS.familyBold, fontSize: 15, color: COLORS.white },
   textSecondary: { color: COLORS.primary },
@@ -368,12 +461,23 @@ const tt = StyleSheet.create({
 });
 
 const es = StyleSheet.create({
-  root:     { alignItems: 'center', paddingVertical: 52, gap: 12, paddingHorizontal: 32 },
-  iconWrap: { width: 70, height: 70, borderRadius: 35, backgroundColor: COLORS.primaryLight, alignItems: 'center', justifyContent: 'center' },
-  title:    { fontFamily: FONTS.familyBold, fontSize: 17, color: COLORS.textPrimary, textAlign: 'center' },
-  subtitle: { fontFamily: FONTS.family, fontSize: 13, color: COLORS.textSecondary, textAlign: 'center', lineHeight: 19 },
-  btn:      { marginTop: 8, backgroundColor: COLORS.accent, borderRadius: RADIUS.pill, paddingVertical: 12, paddingHorizontal: 28 },
-  btnText:  { fontFamily: FONTS.familyBold, fontSize: 14, color: COLORS.white },
+  root:     { alignItems: 'center', paddingVertical: 64, gap: 14, paddingHorizontal: 40 },
+  iconWrap: {
+    width: 80, height: 80, borderRadius: 40,
+    backgroundColor: 'rgba(255,127,63,0.10)',
+    alignItems: 'center', justifyContent: 'center',
+    marginBottom: 4,
+  },
+  title:    { fontFamily: FONTS.familyBold, fontSize: 20, color: COLORS.textPrimary, textAlign: 'center' },
+  subtitle: { fontFamily: FONTS.family, fontSize: 15, color: COLORS.textSecondary, textAlign: 'center', lineHeight: 22 },
+  btn:      {
+    backgroundColor: COLORS.accent,
+    borderRadius: RADIUS.pill,
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    ...SHADOW.card,
+  },
+  btnText:  { fontFamily: FONTS.familyBold, fontSize: 15, color: COLORS.white },
 });
 
 const li = StyleSheet.create({
